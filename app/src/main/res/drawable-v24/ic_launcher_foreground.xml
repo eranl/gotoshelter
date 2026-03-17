@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="108dp"
+        android:height="108dp"
+        android:viewportWidth="108"
+        android:viewportHeight="108">
+  <!-- Stylized Shelter (House) -->
+  <path
+          android:fillColor="#FFFFFF"
+          android:pathData="M54,25 L20,50 L30,50 L30,85 L78,82 L78,50 L88,50 Z" />
+  <!-- Navigation Arrow -->
+  <path
+          android:fillColor="#FFC107"
+          android:pathData="M54,45 L40,75 L54,68 L68,75 Z" />
+</vector>

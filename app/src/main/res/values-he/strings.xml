@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">סעו למקלט</string>
+  <string name="settings_title">הגדרות</string>
+  <string name="cellular_alerts_title">התראות סלולריות</string>
+  <string name="cellular_alerts_description">כדי לקבל התראות סלולריות, יש לאשר הרשאת SMS</string>
+  <string name="tzofar_alerts_title">התראות "צופר"</string>
+  <string name="tzofar_alerts_description">כדי לקבל התראות מ-"צופר", יש לאשר הרשאת מיקום והתראות. המיקום ישמש אך ורק בעת קבלת התראה כדי לבדוק אם היא רלוונטית לאזורך.</string>
+  <string name="hfc_alerts_title">התראות "פיקוד העורף"</string>
+  <string name="hfc_alerts_description">כדי לקבל התראות מ-"פיקוד העורף", יש לאשר גישה להתראות (Notification Access).</string>
+  <string name="activity_permission">זיהוי נהיגה</string>
+  <string name="activity_description">כדי ש-Waze יופעל רק בזמן נהיגה, יש לאשר הרשאת פעילות (Activity). הבדיקה תתבצע רק בעת קבלת התראה.</string>
+  <string name="overlay_permission_title">הצג מעל אפליקציות אחרות</string>
+  <string name="overlay_permission_description">חובה עבור הפעלת ניווט אוטומטית. מאפשר לאפליקציה להפעיל את Waze מיד עם קבלת התראה.</string>
+  <string name="test_waze_button">בדיקת הפעלת Waze</string>
+  <string name="approve_button">אשר</string>
+
+  <string name="urgent_alerts">היסטוריית התראות</string>
+  <string name="no_alerts">אין התראות</string>
+  <string name="no_alerts_desc">כאן יופיעו כל ההתראות שיתקבלו</string>
+  <string name="alert_prefix">התראה - %1$s</string>
+  <string name="title">נתונים נוספים</string>
+
+  <string name="monitoring_service_title">מנטר התראות בזמן אמת</string>
+  <string name="monitoring_service_desc">מחובר לצופר לקבלת התראות</string>
+  <string name="error_install_navigation_app">נא להתקין Waze או Google Maps לניווט למקלט</string>
+  <string name="no_navigation_app_installed">לא מותקנת אפליקציית ניווט</string>
+  <string name="privacy_note">אפליקציה זו אינה שומרת או משדרת נתונים כלשהם. הקוד פתוח וזמין ב-GitHub.</string>
+  <string name="cellular">סלולרי</string>
+  <string name="emergency_cellular">סלולרי חירום</string>
+
+  <string name="clear_all">נקה הכל</string>
+  <string name="exit_app">יציאה</string>
+  <string name="dismiss">התעלם</string>
+  <string name="back_to_alerts">חזרה להתראות</string>
+  <string name="granted">מאושר</string>
+  <string name="type_tzofar">צופר</string>
+  <string name="type_notification">התראה</string>
+  <string name="type_raw_notification">התראה גולמית</string>
+  <string name="type_tzofar_raw">צופר גולמי</string>
+  <string name="type_cellular_raw">סלולרי גולמי</string>
+  <string name="simulate_cellular">סמלוץ התראה סלולרית</string>
+  <string name="simulate_tzofar">סמלוץ התראת צופר</string>
+</resources>
