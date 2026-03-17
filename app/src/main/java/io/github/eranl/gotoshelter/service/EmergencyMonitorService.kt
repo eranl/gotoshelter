@@ -18,7 +18,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import io.github.eranl.gotoshelter.AlertManager
-import io.github.eranl.gotoshelter.AlertStore
 import io.github.eranl.gotoshelter.MainActivity
 import io.github.eranl.gotoshelter.R
 import io.github.eranl.gotoshelter.util.LocationHelper
@@ -220,7 +219,7 @@ class EmergencyMonitorService : Service() {
       if (isInArea) {
         Log.d(TAG, "Current location is within the alert area. Triggering alert handling.")
 
-        AlertStore.addAlert(
+        AlertManager.onEmergencyAlert(
           context = this@EmergencyMonitorService,
           type = getString(R.string.type_tzofar),
           text = data.getString(
@@ -234,7 +233,6 @@ class EmergencyMonitorService : Service() {
             }"
           )
         )
-        AlertManager.onEmergencyAlert(this@EmergencyMonitorService)
       } else {
         Log.d(TAG, "Current location is NOT within the alert area. Ignoring alert.")
       }

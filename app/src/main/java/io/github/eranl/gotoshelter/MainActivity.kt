@@ -57,7 +57,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import io.github.eranl.gotoshelter.service.EmergencyAlertListenerService
 import io.github.eranl.gotoshelter.service.EmergencyMonitorService
 import io.github.eranl.gotoshelter.ui.components.AppTopBar
-import io.github.eranl.gotoshelter.ui.screens.AlertsScreen
 import io.github.eranl.gotoshelter.ui.screens.SettingsScreen
 import io.github.eranl.gotoshelter.ui.theme.GoToShelterTheme
 import io.github.eranl.gotoshelter.ui.theme.SuccessGreen
@@ -116,7 +115,7 @@ fun NoNavigationAppScreen(onExit: () -> Unit) {
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
-      AppTopBar(title = stringResource(R.string.no_navigation_app_installed))
+      AppTopBar()
     }
   ) { innerPadding ->
     Column(
@@ -144,16 +143,11 @@ fun NoNavigationAppScreen(onExit: () -> Unit) {
   }
 }
 
-enum class Screen {
-  ALERTS, SETTINGS
-}
-
 @Composable
 fun MainScreen() {
   val context = LocalContext.current
   val lifecycleOwner = LocalLifecycleOwner.current
 
-  var currentScreen by remember { mutableStateOf<Screen?>(null) }
   var showOverlayDialog by remember { mutableStateOf(false) }
 
   val checkAndStartServices = {
@@ -162,7 +156,6 @@ fun MainScreen() {
 
     if (!overlayGranted) {
       showOverlayDialog = true
-      currentScreen = Screen.SETTINGS
     } else {
       showOverlayDialog = false
 
@@ -171,12 +164,6 @@ fun MainScreen() {
         EmergencyAlertListenerService.ensureServiceRunning(context)
       }
       EmergencyMonitorService.startIfPermissionsGranted(context)
-
-      if (!areAllPermissionsGranted(context)) {
-        currentScreen = Screen.SETTINGS
-      } else if (currentScreen == null) {
-        currentScreen = Screen.ALERTS
-      }
     }
   }
 
@@ -190,8 +177,6 @@ fun MainScreen() {
     val observer = LifecycleEventObserver { _, event ->
       if (event == Lifecycle.Event.ON_RESUME) {
         checkAndStartServices()
-      } else if (event == Lifecycle.Event.ON_STOP) {
-        currentScreen = null
       }
     }
     lifecycleOwner.lifecycle.addObserver(observer)
@@ -210,7 +195,7 @@ fun MainScreen() {
           showOverlayDialog = false
           val intent = Intent(
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:\${context.packageName}")
+            Uri.parse("package:${context.packageName}")
           )
           overlayLauncher.launch(intent)
         }) {
@@ -225,13 +210,7 @@ fun MainScreen() {
     )
   }
 
-  val screenToDisplay = currentScreen
-    ?: if (areAllPermissionsGranted(context) && Settings.canDrawOverlays(context)) Screen.ALERTS else Screen.SETTINGS
-
-  when (screenToDisplay) {
-    Screen.ALERTS -> AlertsScreen(onSettingsClick = { currentScreen = Screen.SETTINGS })
-    Screen.SETTINGS -> SettingsScreen(onAlertsClick = { currentScreen = Screen.ALERTS })
-  }
+  SettingsScreen()
 }
 
 @Composable

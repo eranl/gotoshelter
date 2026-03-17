@@ -14,7 +14,6 @@ import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import android.util.Log
 import io.github.eranl.gotoshelter.AlertManager
-import io.github.eranl.gotoshelter.AlertStore
 import io.github.eranl.gotoshelter.R
 
 /**
@@ -159,13 +158,11 @@ class EmergencyAlertListenerService : NotificationListenerService() {
 
     Log.d(TAG, "Emergency notification from $packageName: $title")
 
-    AlertStore.addAlert(
+    // Trigger driving check and potential navigation
+    AlertManager.onEmergencyAlert(
       context = this,
       type = getString(R.string.type_notification),
       text = "$title $text"
     )
-
-    // Trigger driving check and potential navigation
-    AlertManager.onEmergencyAlert(this)
   }
 }

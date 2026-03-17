@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">إلى الملجأ</string>
-  <string name="settings_title">الإعدادات</string>
+  <string name="intro_title">أتمتة الملاحة إلى الملاجئ</string>
+  <string name="intro_description">يقوم إلى الملجأ بمراقبة إنذارات الطوارئ في الوقت الفعلي. عند اكتشاف إنذار، يقوم تلقائيًا بتشغيل Waze أو خرائط Google لتوجيهك إلى أقرب ملجأ.</string>
   <string name="tzofar_alerts_title">تنبيهات "تسوفار"</string>
   <string name="tzofar_alerts_description">لتلقي التنبيهات من "تسوفار"، يجب منح إذن الموقع والإشعارات. سيتم استخدام الموقع فقط عند تلقي تنبيه للتحقق مما إذا كان مناسبًا لمنطقتك.</string>
   <string name="hfc_alerts_title">تنبيهات "قيادة الجبهة الداخلية"</string>
@@ -13,26 +14,13 @@
   <string name="test_waze_button">اختبار تشغيل Waze</string>
   <string name="approve_button">موافقة</string>
 
-  <string name="urgent_alerts">سجل التنبيهات</string>
-  <string name="no_alerts">لا توجد تنبيهات</string>
-  <string name="no_alerts_desc">ستظهر هنا أي تنبيهات عاجلة يتم استلامها</string>
-  <string name="alert_prefix">تنبيه - %1$s</string>
-  <string name="text">بيانات إضافية</string>
-
   <string name="monitoring_service_title">مراقب التنبيهات في الوقت الفعلي</string>
   <string name="monitoring_service_desc">متصل بـ Tzofar للتنبيهات</string>
   <string name="error_install_navigation_app">يرجى تثبيت Waze أو خرائط Google للتنقل إلى الملجأ</string>
-  <string name="no_navigation_app_installed">لم يتم تثبيت تطبيق ملاحة</string>
   <string name="privacy_note">هذا التطبيق لا يقوم بتخزين أو نقل أي بيانات. الكود مفتوح المصدر ومتاح على GitHub.</string>
 
-  <string name="clear_all">مسح الكل</string>
   <string name="exit_app">خروج من التطبيق</string>
-  <string name="dismiss">تجاهل</string>
-  <string name="back_to_alerts">العودة إلى التنبيهات</string>
   <string name="granted">تم المنح</string>
   <string name="type_tzofar">تسوفار</string>
   <string name="type_notification">إشعار</string>
-  <string name="type_raw_notification">إشعار خام</string>
-  <string name="type_tzofar_raw">تسوفار خام</string>
-  <string name="simulate_tzofar">محاكاة تنبيه تسوفار</string>
 </resources>

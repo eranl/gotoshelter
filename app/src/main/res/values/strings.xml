@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">GoToShelter</string>
-  <string name="settings_title">Settings</string>
+  <string name="intro_title">Automate Navigation to Shelters</string>
+  <string name="intro_description">GoToShelter monitors emergency early warnings in real-time. When a warning is
+    detected, it automatically launches Waze or Google Maps to navigate you to the nearest shelter.</string>
   <string name="tzofar_alerts_title">"Tzofar" Alerts</string>
   <string name="tzofar_alerts_description">To receive alerts from "Tzofar", grant location and notification permissions. Location will only be used when an alert is received to check if it applies to your location.</string>
   <string name="hfc_alerts_title">"Home Front Command" Alerts</string>
@@ -13,26 +15,13 @@
   <string name="test_waze_button">Test Waze Launch</string>
   <string name="approve_button">Grant</string>
 
-  <string name="urgent_alerts">Alert History</string>
-  <string name="no_alerts">No alerts</string>
-  <string name="no_alerts_desc">Any urgent alerts received will appear here</string>
-  <string name="alert_prefix">Alert - %1$s</string>
-  <string name="text">Additional Data</string>
-
   <string name="monitoring_service_title">Real-time Alert Monitor</string>
   <string name="monitoring_service_desc">Connected to Tzofar for alerts</string>
   <string name="error_install_navigation_app">Waze or Google Maps has to be installed in order to use this app</string>
-  <string name="no_navigation_app_installed">No Navigation App Installed</string>
   <string name="privacy_note">This app does not store or transmit any data. It is open source and available on GitHub.</string>
 
-  <string name="clear_all">Clear all</string>
   <string name="exit_app">Exit App</string>
-  <string name="dismiss">Dismiss</string>
-  <string name="back_to_alerts">Back to Alerts</string>
   <string name="granted">Granted</string>
   <string name="type_tzofar">Tzofar</string>
   <string name="type_notification">Notification</string>
-  <string name="type_raw_notification">Raw Notification</string>
-  <string name="type_tzofar_raw">Raw Tzofar</string>
-  <string name="simulate_tzofar">Simulate Tzofar Alert</string>
 </resources>

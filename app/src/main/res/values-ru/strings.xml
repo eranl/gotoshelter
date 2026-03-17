@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">В укрытие</string>
-  <string name="settings_title">Настройки</string>
+  <string name="intro_title">Автоматизация навигации к укрытиям</string>
+  <string name="intro_description">В укрытие отслеживает экстренные предупреждения в режиме реального времени. При обнаружении предупреждения приложение автоматически запускает Waze или Google Maps для навигации к ближайшему укрытию.</string>
   <string name="tzofar_alerts_title">Оповещения "Цофар"</string>
   <string name="tzofar_alerts_description">Чтобы получать оповещения от "Цофар", предоставьте разрешения на доступ к местоположению и уведомлениям. Местоположение будет использоваться только при получении оповещения для проверки его актуальности для вашего района.</string>
   <string name="hfc_alerts_title">Оповещения "Командования тыла"</string>
@@ -13,26 +14,13 @@
   <string name="test_waze_button">Тест запуска Waze</string>
   <string name="approve_button">Одобрить</string>
 
-  <string name="urgent_alerts">История оповещений</string>
-  <string name="no_alerts">Нет оповещений</string>
-  <string name="no_alerts_desc">Здесь будут отображаться все полученные срочные оповещения</string>
-  <string name="alert_prefix">Оповещение - %1$s</string>
-  <string name="text">Дополнительные данные</string>
-
   <string name="monitoring_service_title">Мониторинг оповещений в реальном времени</string>
   <string name="monitoring_service_desc">Подключено к Tzofar для оповещений</string>
   <string name="error_install_navigation_app">Пожалуйста, установите Waze или Google Maps для навигации к укрытию</string>
-  <string name="no_navigation_app_installed">Навигационное приложение не установлено</string>
   <string name="privacy_note">Это приложение не хранит и не передает никакие данные. Это проект с открытым исходным кодом, доступный на GitHub.</string>
 
-  <string name="clear_all">Очистить все</string>
   <string name="exit_app">Выйти</string>
-  <string name="dismiss">Закрыть</string>
-  <string name="back_to_alerts">Назад к оповещениям</string>
   <string name="granted">Разрешено</string>
   <string name="type_tzofar">Tzofar</string>
   <string name="type_notification">Уведомление</string>
-  <string name="type_raw_notification">Необработанное уведомление</string>
-  <string name="type_tzofar_raw">Tzofar Raw</string>
-  <string name="simulate_tzofar">Симулировать оповещение Tzofar</string>
 </resources>

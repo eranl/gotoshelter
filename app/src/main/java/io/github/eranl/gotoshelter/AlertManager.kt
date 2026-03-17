@@ -8,16 +8,23 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
+import android.util.Log.e
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.google.android.gms.location.ActivityRecognition
+import io.github.eranl.gotoshelter.BuildConfig.DEBUG
 import io.github.eranl.gotoshelter.receiver.DrivingActivityReceiver
+import java.io.File
+import java.io.FileOutputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * Singleton to coordinate emergency alerts and navigation logic.
  */
 object AlertManager {
   private const val TAG = "AlertManager"
+  private const val ALERTS_FILE_NAME = "alerts_log.txt"
 
   private val wazeIntent = Intent(Intent.ACTION_VIEW, "waze://?q=shelter&navigate=yes&force=yes".toUri()).apply {
     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -34,8 +41,13 @@ object AlertManager {
    * Triggers a driving status check and potentially navigation.
    */
   @SuppressLint("MissingPermission")
-  fun onEmergencyAlert(context: Context) {
+  fun onEmergencyAlert(context: Context, type: String, text: String) {
     Log.d(TAG, "Emergency alert received. Checking driving status...")
+
+    // save to app files only in debug versions
+    if (DEBUG) {
+      appendAlertToFile(context, type, text)
+    }
 
     val hasPermission = if (Build.VERSION.SDK_INT >= 29) {
       ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED
@@ -71,6 +83,23 @@ object AlertManager {
         Log.e(TAG, "Failed to request activity update: ${it.message}. Falling back to immediate navigation.")
         triggerNavigation(context)
       }
+  }
+
+  private fun appendAlertToFile(context: Context, type: String, text: String) {
+    try {
+      val file = File(context.getExternalFilesDir(null), ALERTS_FILE_NAME)
+      val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+      val logEntry = StringBuilder().apply {
+        append("[${LocalDateTime.now().format(formatter)}] ")
+        append("type: ${type} | ")
+        append("text: ${text}\n")
+      }.toString()
+
+      FileOutputStream(file, true).use { it.write(logEntry.toByteArray()) }
+      Log.d(TAG, "Alert appended to ${file.absolutePath}")
+    } catch (e: Exception) {
+      Log.e(TAG, "Failed to append alert to file", e)
+    }
   }
 
   /**

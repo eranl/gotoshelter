@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -25,14 +24,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -59,10 +56,8 @@ import io.github.eranl.gotoshelter.ui.theme.SuccessGreen
 import kotlinx.coroutines.delay
 
 @Composable
-fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
+fun SettingsScreen() {
   val context = LocalContext.current
-
-  BackHandler(onBack = onAlertsClick)
 
   var activityGranted by remember {
     mutableStateOf(
@@ -103,16 +98,6 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
     modifier = Modifier.fillMaxSize(),
     topBar = {
       AppTopBar(
-        title = stringResource(R.string.settings_title),
-        navigationIcon = {
-          IconButton(onClick = onAlertsClick) {
-            Icon(
-              Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = stringResource(R.string.back_to_alerts),
-              tint = MaterialTheme.colorScheme.onPrimary
-            )
-          }
-        }
       )
     },
     contentWindowInsets = WindowInsets.systemBars
@@ -125,6 +110,24 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
         .verticalScroll(rememberScrollState()),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
+      Text(
+        text = stringResource(R.string.intro_title),
+        style = MaterialTheme.typography.headlineSmall,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(bottom = 8.dp)
+      )
+
+      Text(
+        text = stringResource(R.string.intro_description),
+        style = MaterialTheme.typography.bodyMedium,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(horizontal = 16.dp)
+      )
+
+      Spacer(modifier = Modifier.height(24.dp))
+
       // 1. Tzofar (Location & Notifications)
       val allTzofarGranted = locationGranted && notificationsGranted
       PermissionRow(
@@ -165,7 +168,7 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
       Spacer(modifier = Modifier.height(32.dp))
 
       Button(
-        onClick = { AlertManager.onEmergencyAlert(context) },
+        onClick = { AlertManager.onEmergencyAlert(context, "test", "test") },
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
       ) {
