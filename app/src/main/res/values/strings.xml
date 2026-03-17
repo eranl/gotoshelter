@@ -15,13 +15,11 @@
   <string name="test_waze_button">Test Waze Launch</string>
   <string name="approve_button">Grant</string>
 
-  <string name="monitoring_service_title">Real-time Alert Monitor</string>
+  <string name="monitoring_service_title">Real-time Alert Monitoring</string>
   <string name="monitoring_service_desc">Connected to Tzofar for alerts</string>
   <string name="error_install_navigation_app">Waze or Google Maps has to be installed in order to use this app</string>
   <string name="privacy_note">This app does not store or transmit any data. It is open source and available on GitHub.</string>
 
   <string name="exit_app">Exit App</string>
   <string name="granted">Granted</string>
-  <string name="type_tzofar">Tzofar</string>
-  <string name="type_notification">Notification</string>
 </resources>

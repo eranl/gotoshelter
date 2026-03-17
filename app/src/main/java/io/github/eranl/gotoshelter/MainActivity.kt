@@ -159,7 +159,7 @@ fun MainScreen() {
     } else {
       showOverlayDialog = false
 
-      // Start background tasks immediately based on eligibility
+      // Start services if overlay is granted and their specific requirements are met
       if (isNotificationServiceEnabled(context)) {
         EmergencyAlertListenerService.ensureServiceRunning(context)
       }

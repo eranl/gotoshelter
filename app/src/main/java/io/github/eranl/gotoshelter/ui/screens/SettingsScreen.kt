@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import io.github.eranl.gotoshelter.AlertManager
 import io.github.eranl.gotoshelter.R
+import io.github.eranl.gotoshelter.service.EmergencyAlertListenerService
 import io.github.eranl.gotoshelter.service.EmergencyMonitorService
 import io.github.eranl.gotoshelter.ui.components.AppTopBar
 import io.github.eranl.gotoshelter.ui.theme.SuccessGreen
@@ -190,8 +191,11 @@ fun SettingsScreen() {
   }
 
   // Start services if permissions are granted
-  LaunchedEffect(notificationsGranted, locationGranted, Settings.canDrawOverlays(context)) {
+  LaunchedEffect(notificationsGranted, locationGranted, notificationListenerGranted, Settings.canDrawOverlays(context)) {
     EmergencyMonitorService.startIfPermissionsGranted(context)
+    if (notificationListenerGranted) {
+      EmergencyAlertListenerService.ensureServiceRunning(context)
+    }
   }
 
   // Periodically check permissions

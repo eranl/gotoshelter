@@ -221,7 +221,7 @@ class EmergencyMonitorService : Service() {
 
         AlertManager.onEmergencyAlert(
           context = this@EmergencyMonitorService,
-          type = getString(R.string.type_tzofar),
+          type = "צופר",
           text = data.getString(
             "title${
               when (Locale.getDefault().language) {

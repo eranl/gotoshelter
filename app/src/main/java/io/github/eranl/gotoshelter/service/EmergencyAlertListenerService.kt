@@ -161,7 +161,7 @@ class EmergencyAlertListenerService : NotificationListenerService() {
     // Trigger driving check and potential navigation
     AlertManager.onEmergencyAlert(
       context = this,
-      type = getString(R.string.type_notification),
+      type = "notification",
       text = "$title $text"
     )
   }

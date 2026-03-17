@@ -3,25 +3,25 @@
   <string name="app_name">סעו למקלט</string>
   <string name="intro_title">ניווט אוטומטי למקלטים</string>
   <string name="intro_description">סעו למקלט מנטרת התרעות מקדימות מפיקוד העורף בזמן אמת. אם מזוהה התראה,
-    האפליקציה תפעיל אוטומטית את Waze או Google Maps כדי לנווט אותך למקלט הקרוב ביותר.</string>
-  <string name="tzofar_alerts_title">התראות "צופר"</string>
-  <string name="tzofar_alerts_description">כדי לקבל התראות מ-"צופר", יש לאשר הרשאת מיקום והתראות. המיקום ישמש אך ורק בעת קבלת התראה כדי לבדוק אם היא רלוונטית לאזורך.</string>
-  <string name="hfc_alerts_title">התראות "פיקוד העורף"</string>
-  <string name="hfc_alerts_description">כדי לקבל התראות מ-"פיקוד העורף", יש לאשר גישה להתראות (Notification Access).</string>
+    האפליקציה מפעילה אוטומטית את Waze או Google Maps כדי לנווט אותך למקלט הקרוב ביותר.</string>
+  <string name="tzofar_alerts_title">התראות צופר</string>
+  <string name="tzofar_alerts_description">כדי לקבל התראות מצופר, יש לאשר הרשאות מיקום והתראות. המיקום מבוקש רק בעת קבלת
+    התראה כדי לבדוק אם היא רלוונטית לאזורך.</string>
+  <string name="hfc_alerts_title">התראות פיקוד העורף</string>
+  <string name="hfc_alerts_description">כדי לקבל התראות מאפליקציית פיקוד העורף, יש לאשר גישה להתראות.</string>
   <string name="activity_permission">זיהוי נהיגה</string>
-  <string name="activity_description">כדי ש-Waze יופעל רק בזמן נהיגה, יש לאשר הרשאת פעילות (Activity). הבדיקה תתבצע רק בעת קבלת התראה.</string>
+  <string name="activity_description">כדי ש-Waze יופעל רק בזמן נהיגה, יש לאשר הרשאת פעילות גופנית. הבדיקה תתבצע רק בעת
+    קבלת התראה.</string>
   <string name="overlay_permission_title">הצג מעל אפליקציות אחרות</string>
   <string name="overlay_permission_description">חובה עבור הפעלת ניווט אוטומטית. מאפשר לאפליקציה להפעיל את Waze מיד עם קבלת התראה.</string>
   <string name="test_waze_button">בדיקת הפעלת Waze</string>
   <string name="approve_button">אשר</string>
 
-  <string name="monitoring_service_title">מנטר התראות בזמן אמת</string>
+  <string name="monitoring_service_title">ניטור התראות בזמן אמת</string>
   <string name="monitoring_service_desc">מחובר לצופר לקבלת התראות</string>
-  <string name="error_install_navigation_app">נא להתקין Waze או Google Maps לניווט למקלט</string>
+  <string name="error_install_navigation_app">Waze או Google Maps חייבות להיות מותקנות כדי להשתמש באפליקציה זו</string>
   <string name="privacy_note">אפליקציה זו אינה שומרת או משדרת נתונים כלשהם. הקוד פתוח וזמין ב-GitHub.</string>
 
   <string name="exit_app">יציאה</string>
   <string name="granted">מאושר</string>
-  <string name="type_tzofar">צופר</string>
-  <string name="type_notification">התראה</string>
 </resources>
