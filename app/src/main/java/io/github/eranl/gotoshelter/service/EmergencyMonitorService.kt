@@ -1,7 +1,6 @@
 package io.github.eranl.gotoshelter.service
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,7 +8,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
@@ -23,7 +21,6 @@ import io.github.eranl.gotoshelter.AlertManager
 import io.github.eranl.gotoshelter.AlertStore
 import io.github.eranl.gotoshelter.MainActivity
 import io.github.eranl.gotoshelter.R
-import io.github.eranl.gotoshelter.receiver.EmergencyAlertReceiver
 import io.github.eranl.gotoshelter.util.LocationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +41,6 @@ import java.util.concurrent.TimeUnit
 /**
  * Foreground service that monitors for emergency alerts.
  * 1. Maintains a WebSocket connection to Tzofar for real-time alerts.
- * 2. Handles dynamic registration of Cell Broadcast receivers.
  * Runs constantly in the background to ensure immediate detection.
  */
 class EmergencyMonitorService : Service() {
@@ -56,17 +52,11 @@ class EmergencyMonitorService : Service() {
   private var reconnectDelay = 5000L // Start with 5 seconds
   private val maxReconnectDelay = 60000L // Cap at 1 minute
 
-  private val cellBroadcastReceiver = EmergencyAlertReceiver()
-
   companion object {
     private const val MONITOR_CHANNEL_ID = "EmergencyMonitorChannel"
     private const val FOREGROUND_NOTIFICATION_ID = 102
     private const val WS_URL = "wss://ws.tzevaadom.co.il/socket?platform=ANDROID"
     private const val PING_INTERVAL_SECONDS = 45L
-
-    private const val SMS_CB_RECEIVED_ACTION = "android.provider.Telephony.SMS_CB_RECEIVED"
-    private const val SMS_EMERGENCY_CB_RECEIVED_ACTION = "android.provider.Telephony.SMS_EMERGENCY_CB_RECEIVED"
-    private const val ACTION_SMS_EMERGENCY_CB_RECEIVED = "android.provider.action.SMS_EMERGENCY_CB_RECEIVED"
 
     /**
      * Starts the service if both location, notification, and overlay permissions are granted.
@@ -124,50 +114,11 @@ class EmergencyMonitorService : Service() {
       startForeground(FOREGROUND_NOTIFICATION_ID, notification)
     }
 
-    registerCellBroadcastReceivers()
-
     client = OkHttpClient.Builder()
       .readTimeout(0, TimeUnit.MILLISECONDS)
       .pingInterval(PING_INTERVAL_SECONDS, TimeUnit.SECONDS)
       .build()
     connect()
-  }
-
-  private fun registerCellBroadcastReceivers() {
-    Log.d(TAG, "Registering Cell Broadcast receivers dynamically")
-
-    // 1. Register for standard Cell Broadcasts
-    val standardFilter = IntentFilter(SMS_CB_RECEIVED_ACTION)
-    if (Build.VERSION.SDK_INT >= 33) {
-      registerReceiver(cellBroadcastReceiver, standardFilter, Manifest.permission.BROADCAST_SMS, null, RECEIVER_EXPORTED)
-    } else {
-      registerReceiver(cellBroadcastReceiver, standardFilter, Manifest.permission.BROADCAST_SMS, null)
-    }
-
-    // 2. Register for Emergency Cell Broadcasts
-    val emergencyFilter = IntentFilter().apply {
-      addAction(SMS_EMERGENCY_CB_RECEIVED_ACTION)
-      addAction(ACTION_SMS_EMERGENCY_CB_RECEIVED)
-      priority = 999
-    }
-
-    if (Build.VERSION.SDK_INT >= 33) {
-      registerReceiver(
-        cellBroadcastReceiver,
-        emergencyFilter,
-        "android.permission.RECEIVE_EMERGENCY_BROADCAST",
-        null,
-        RECEIVER_EXPORTED
-      )
-    } else {
-      @SuppressLint("UnspecifiedRegisterReceiverFlag")
-      registerReceiver(
-        cellBroadcastReceiver,
-        emergencyFilter,
-        "android.permission.RECEIVE_EMERGENCY_BROADCAST",
-        null
-      )
-    }
   }
 
   private fun createNotificationChannels() {
@@ -310,11 +261,6 @@ class EmergencyMonitorService : Service() {
   }
 
   override fun onDestroy() {
-    try {
-      unregisterReceiver(cellBroadcastReceiver)
-    } catch (e: Exception) {
-      Log.e(TAG, "Error unregistering receiver", e)
-    }
     webSocket?.close(1000, "Service destroyed")
     serviceScope.cancel()
     super.onDestroy()

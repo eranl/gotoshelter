@@ -2,8 +2,6 @@
 <resources>
   <string name="app_name">اذهب إلى الملجأ</string>
   <string name="settings_title">الإعدادات</string>
-  <string name="cellular_alerts_title">تنبيهات خلوية</string>
-  <string name="cellular_alerts_description">لتلقي التنبيهات الخلوية، يجب منح إذن الرسائل القصيرة (SMS).</string>
   <string name="tzofar_alerts_title">تنبيهات "تسوفار"</string>
   <string name="tzofar_alerts_description">لتلقي التنبيهات من "تسوفار"، يجب منح إذن الموقع والإشعارات. سيتم استخدام الموقع فقط عند تلقي تنبيه للتحقق مما إذا كان مناسبًا لمنطقتك.</string>
   <string name="hfc_alerts_title">تنبيهات "قيادة الجبهة الداخلية"</string>
@@ -26,8 +24,6 @@
   <string name="error_install_navigation_app">يرجى تثبيت Waze أو خرائط Google للتنقل إلى الملجأ</string>
   <string name="no_navigation_app_installed">لم يتم تثبيت تطبيق ملاحة</string>
   <string name="privacy_note">هذا التطبيق لا يقوم بتخزين أو نقل أي بيانات. الكود مفتوح المصدر ومتاح على GitHub.</string>
-  <string name="cellular">خلوي</string>
-  <string name="emergency_cellular">طوارئ خلوي</string>
 
   <string name="clear_all">مسح الكل</string>
   <string name="exit_app">خروج من التطبيق</string>
@@ -38,7 +34,5 @@
   <string name="type_notification">إشعار</string>
   <string name="type_raw_notification">إشعار خام</string>
   <string name="type_tzofar_raw">تسوفار خام</string>
-  <string name="type_cellular_raw">خلوي خام</string>
-  <string name="simulate_cellular">محاكاة تنبيه خلوي</string>
   <string name="simulate_tzofar">محاكاة تنبيه تسوفار</string>
 </resources>

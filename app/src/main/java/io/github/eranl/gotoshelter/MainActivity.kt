@@ -262,8 +262,6 @@ fun PermissionRow(
 }
 
 private fun areAllPermissionsGranted(context: Context): Boolean {
-  val sms = checkPermission(context, Manifest.permission.RECEIVE_SMS)
-  val cellBroadcast = checkPermission(context, "android.permission.READ_CELL_BROADCASTS")
   val location = checkPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
 
   val activity = if (Build.VERSION.SDK_INT >= 29) {
@@ -277,7 +275,7 @@ private fun areAllPermissionsGranted(context: Context): Boolean {
   val notificationListener = isNotificationServiceEnabled(context)
   val overlay = Settings.canDrawOverlays(context)
 
-  return sms && cellBroadcast && location && activity && notifications && notificationListener && overlay
+  return location && activity && notifications && notificationListener && overlay
 }
 
 private fun checkPermission(context: Context, permission: String): Boolean {

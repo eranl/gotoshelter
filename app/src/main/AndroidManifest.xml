@@ -16,17 +16,6 @@
   <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-  <!-- SMS and Emergency Alerts - Suppressing policy warnings as this is core functionality -->
-  <uses-permission
-          android:name="android.permission.RECEIVE_SMS"
-          tools:ignore="ProtectedPermissions" />
-  <uses-permission
-          android:name="android.permission.RECEIVE_EMERGENCY_BROADCAST"
-          tools:ignore="ProtectedPermissions" />
-  <uses-permission
-          android:name="android.permission.READ_CELL_BROADCASTS"
-          tools:ignore="ProtectedPermissions" />
-
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
   <uses-feature

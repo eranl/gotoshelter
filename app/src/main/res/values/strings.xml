@@ -2,8 +2,6 @@
 <resources>
   <string name="app_name">Go To Shelter</string>
   <string name="settings_title">Settings</string>
-  <string name="cellular_alerts_title">Cellular Alerts</string>
-  <string name="cellular_alerts_description">To receive cellular alerts, grant SMS permission</string>
   <string name="tzofar_alerts_title">"Tzofar" Alerts</string>
   <string name="tzofar_alerts_description">To receive alerts from "Tzofar", grant location and notification permissions. Location will only be used when an alert is received to check if it applies to your location.</string>
   <string name="hfc_alerts_title">"Home Front Command" Alerts</string>
@@ -26,8 +24,6 @@
   <string name="error_install_navigation_app">Waze or Google Maps has to be installed in order to use this app</string>
   <string name="no_navigation_app_installed">No Navigation App Installed</string>
   <string name="privacy_note">This app does not store or transmit any data. It is open source and available on GitHub.</string>
-  <string name="cellular">Cellular</string>
-  <string name="emergency_cellular">Emergency cellular</string>
 
   <string name="clear_all">Clear all</string>
   <string name="exit_app">Exit App</string>
@@ -38,7 +34,5 @@
   <string name="type_notification">Notification</string>
   <string name="type_raw_notification">Raw Notification</string>
   <string name="type_tzofar_raw">Raw Tzofar</string>
-  <string name="type_cellular_raw">Raw Cellular</string>
-  <string name="simulate_cellular">Simulate Cellular Alert</string>
   <string name="simulate_tzofar">Simulate Tzofar Alert</string>
 </resources>

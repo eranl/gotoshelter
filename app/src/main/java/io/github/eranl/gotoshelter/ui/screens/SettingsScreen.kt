@@ -29,7 +29,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -53,15 +52,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import io.github.eranl.gotoshelter.AlertManager
-import io.github.eranl.gotoshelter.AlertStore
-import io.github.eranl.gotoshelter.BuildConfig
 import io.github.eranl.gotoshelter.R
 import io.github.eranl.gotoshelter.service.EmergencyMonitorService
 import io.github.eranl.gotoshelter.ui.components.AppTopBar
 import io.github.eranl.gotoshelter.ui.theme.SuccessGreen
 import kotlinx.coroutines.delay
-
-private const val RECEIVE_EMERGENCY_BROADCAST = "android.permission.RECEIVE_EMERGENCY_BROADCAST"
 
 @Composable
 fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
@@ -69,15 +64,6 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
 
   BackHandler(onBack = onAlertsClick)
 
-  var smsPermissionGranted by remember {
-    mutableStateOf(checkPermission(context, Manifest.permission.RECEIVE_SMS))
-  }
-  var cellBroadcastPermissionGranted by remember {
-    mutableStateOf(checkPermission(context, "android.permission.READ_CELL_BROADCASTS"))
-  }
-  var emergencyBroadcastPermissionGranted by remember {
-    mutableStateOf(checkPermission(context, RECEIVE_EMERGENCY_BROADCAST))
-  }
   var activityGranted by remember {
     mutableStateOf(
       if (Build.VERSION.SDK_INT >= 29) {
@@ -104,10 +90,6 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
   val launcher = rememberLauncherForActivityResult(
     ActivityResultContracts.RequestMultiplePermissions()
   ) { permissions ->
-    smsPermissionGranted = permissions[Manifest.permission.RECEIVE_SMS] ?: smsPermissionGranted
-    cellBroadcastPermissionGranted = permissions["android.permission.READ_CELL_BROADCASTS"] ?: cellBroadcastPermissionGranted
-    emergencyBroadcastPermissionGranted = permissions[RECEIVE_EMERGENCY_BROADCAST] ?: emergencyBroadcastPermissionGranted
-
     if (Build.VERSION.SDK_INT >= 29) {
       activityGranted = permissions[Manifest.permission.ACTIVITY_RECOGNITION] ?: activityGranted
     }
@@ -143,24 +125,7 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
         .verticalScroll(rememberScrollState()),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      // 1. Cellular Alerts (SMS & Cell Broadcasts)
-      val allCellularGranted = smsPermissionGranted && cellBroadcastPermissionGranted
-      PermissionRow(
-        title = stringResource(R.string.cellular_alerts_title),
-        description = stringResource(R.string.cellular_alerts_description),
-        isGranted = allCellularGranted,
-        onClick = {
-          launcher.launch(
-            arrayOf(
-              Manifest.permission.RECEIVE_SMS,
-              "android.permission.READ_CELL_BROADCASTS",
-              RECEIVE_EMERGENCY_BROADCAST
-            )
-          )
-        }
-      )
-
-      // 2. Tzofar (Location & Notifications)
+      // 1. Tzofar (Location & Notifications)
       val allTzofarGranted = locationGranted && notificationsGranted
       PermissionRow(
         title = stringResource(R.string.tzofar_alerts_title),
@@ -175,7 +140,7 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
         }
       )
 
-      // 3. Home Front Command (Notification Access)
+      // 2. Home Front Command (Notification Access)
       PermissionRow(
         title = stringResource(R.string.hfc_alerts_title),
         description = stringResource(R.string.hfc_alerts_description),
@@ -185,7 +150,7 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
         }
       )
 
-      // 4. Waze/Driving (Activity Recognition)
+      // 3. Waze/Driving (Activity Recognition)
       PermissionRow(
         title = stringResource(R.string.activity_permission),
         description = stringResource(R.string.activity_description),
@@ -231,9 +196,6 @@ fun SettingsScreen(onAlertsClick: () -> Unit = {}) {
     while (true) {
       notificationListenerGranted = isNotificationServiceEnabled(context)
       locationGranted = checkPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-      smsPermissionGranted = checkPermission(context, Manifest.permission.RECEIVE_SMS)
-      cellBroadcastPermissionGranted = checkPermission(context, "android.permission.READ_CELL_BROADCASTS")
-      emergencyBroadcastPermissionGranted = checkPermission(context, RECEIVE_EMERGENCY_BROADCAST)
       if (Build.VERSION.SDK_INT >= 33) {
         notificationsGranted = checkPermission(context, Manifest.permission.POST_NOTIFICATIONS)
       }

@@ -2,8 +2,6 @@
 <resources>
   <string name="app_name">В укрытие</string>
   <string name="settings_title">Настройки</string>
-  <string name="cellular_alerts_title">Сотовые оповещения</string>
-  <string name="cellular_alerts_description">Чтобы получать сотовые оповещения, предоставьте разрешение на SMS</string>
   <string name="tzofar_alerts_title">Оповещения "Цофар"</string>
   <string name="tzofar_alerts_description">Чтобы получать оповещения от "Цофар", предоставьте разрешения на доступ к местоположению и уведомлениям. Местоположение будет использоваться только при получении оповещения для проверки его актуальности для вашего района.</string>
   <string name="hfc_alerts_title">Оповещения "Командования тыла"</string>
@@ -26,8 +24,6 @@
   <string name="error_install_navigation_app">Пожалуйста, установите Waze или Google Maps для навигации к укрытию</string>
   <string name="no_navigation_app_installed">Навигационное приложение не установлено</string>
   <string name="privacy_note">Это приложение не хранит и не передает никакие данные. Это проект с открытым исходным кодом, доступный на GitHub.</string>
-  <string name="cellular">Сотовая связь</string>
-  <string name="emergency_cellular">Экстренная сотовая связь</string>
 
   <string name="clear_all">Очистить все</string>
   <string name="exit_app">Выйти</string>
@@ -38,7 +34,5 @@
   <string name="type_notification">Уведомление</string>
   <string name="type_raw_notification">Необработанное уведомление</string>
   <string name="type_tzofar_raw">Tzofar Raw</string>
-  <string name="type_cellular_raw">Необработанное сотовое</string>
-  <string name="simulate_cellular">Симулировать сотовое оповещение</string>
   <string name="simulate_tzofar">Симулировать оповещение Tzofar</string>
 </resources>
