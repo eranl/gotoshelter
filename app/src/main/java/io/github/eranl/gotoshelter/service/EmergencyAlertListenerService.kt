@@ -143,6 +143,8 @@ class EmergencyAlertListenerService : NotificationListenerService() {
     Log.d(TAG, "Notification Listener Disconnected")
   }
 
+  private val alertTitles = setOf("מבזק | באזורך", "News Flash | In your area")
+
   override fun onNotificationPosted(sbn: StatusBarNotification) {
     val packageName = sbn.packageName
 
@@ -152,7 +154,10 @@ class EmergencyAlertListenerService : NotificationListenerService() {
     val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
     val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
 
-    if (title != "מבזק | באזורך") {
+    if (! alertTitles.contains(title)) {
+      if (sbn.notification.channelId == "748449") {
+        AlertManager.appendAlertToFile(this, "notification", "$title $text")
+      }
       return
     }
 

@@ -85,7 +85,7 @@ object AlertManager {
       }
   }
 
-  private fun appendAlertToFile(context: Context, type: String, text: String) {
+  fun appendAlertToFile(context: Context, type: String, text: String) {
     try {
       val file = File(context.getExternalFilesDir(null), ALERTS_FILE_NAME)
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
