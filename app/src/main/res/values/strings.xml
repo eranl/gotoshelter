@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Go To Shelter</string>
+  <string name="app_name">GoToShelter</string>
   <string name="settings_title">Settings</string>
   <string name="tzofar_alerts_title">"Tzofar" Alerts</string>
   <string name="tzofar_alerts_description">To receive alerts from "Tzofar", grant location and notification permissions. Location will only be used when an alert is received to check if it applies to your location.</string>

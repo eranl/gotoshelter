@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">اذهب إلى الملجأ</string>
+  <string name="app_name">إلى الملجأ</string>
   <string name="settings_title">الإعدادات</string>
   <string name="tzofar_alerts_title">تنبيهات "تسوفار"</string>
   <string name="tzofar_alerts_description">لتلقي التنبيهات من "تسوفار"، يجب منح إذن الموقع والإشعارات. سيتم استخدام الموقع فقط عند تلقي تنبيه للتحقق مما إذا كان مناسبًا لمنطقتك.</string>
