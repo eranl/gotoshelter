@@ -223,7 +223,7 @@ class EmergencyMonitorService : Service() {
         AlertStore.addAlert(
           context = this@EmergencyMonitorService,
           type = getString(R.string.type_tzofar),
-          title = data.getString(
+          text = data.getString(
             "title${
               when (Locale.getDefault().language) {
                 "iw", "he" -> "He"

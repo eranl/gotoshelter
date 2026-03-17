@@ -57,7 +57,7 @@ fun AppTopBar(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-              text = stringResource(R.string.app_name).uppercase(),
+              text = stringResource(R.string.app_name),
               style = MaterialTheme.typography.labelSmall,
               letterSpacing = 2.sp,
               fontWeight = FontWeight.Bold,

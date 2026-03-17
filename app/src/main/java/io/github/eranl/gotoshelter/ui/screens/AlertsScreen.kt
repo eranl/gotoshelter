@@ -184,14 +184,14 @@ private fun AlertCard(
         }
       }
 
-      if (alert.title.isNotEmpty()) {
+      if (alert.text.isNotEmpty()) {
         HorizontalDivider(
           modifier = Modifier.padding(vertical = 8.dp),
           color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.3f)
         )
 
         Text(
-          text = stringResource(R.string.title),
+          text = stringResource(R.string.text),
           fontWeight = FontWeight.SemiBold,
           fontSize = 12.sp,
           color = MaterialTheme.colorScheme.onErrorContainer,
@@ -200,7 +200,7 @@ private fun AlertCard(
         )
 
         Text(
-          text = alert.title,
+          text = alert.text,
           style = MaterialTheme.typography.labelSmall,
           color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f),
           modifier = Modifier

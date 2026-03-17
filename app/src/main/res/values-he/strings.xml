@@ -17,7 +17,7 @@
   <string name="no_alerts">אין התראות</string>
   <string name="no_alerts_desc">כאן יופיעו כל ההתראות שיתקבלו</string>
   <string name="alert_prefix">התראה - %1$s</string>
-  <string name="title">נתונים נוספים</string>
+  <string name="text">נתונים נוספים</string>
 
   <string name="monitoring_service_title">מנטר התראות בזמן אמת</string>
   <string name="monitoring_service_desc">מחובר לצופר לקבלת התראות</string>

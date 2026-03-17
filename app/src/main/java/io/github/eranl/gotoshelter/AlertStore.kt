@@ -17,7 +17,7 @@ data class Alert(
   val id: String = java.util.UUID.randomUUID().toString(),
   val type: String,
   val timestamp: LocalDateTime = LocalDateTime.now(),
-  val title: String = ""
+  val text: String = ""
 )
 
 /**
@@ -35,12 +35,12 @@ object AlertStore {
   /**
    * Add a new alert to the store and save it to a file
    */
-  fun addAlert(context: Context, type: String, title: String) {
+  fun addAlert(context: Context, type: String, text: String) {
     try {
       val alert = Alert(
         type = type,
         timestamp = LocalDateTime.now(),
-        title = title
+        text = text
       )
 
       val currentAlerts = _alerts.value.toMutableList()
@@ -97,8 +97,8 @@ object AlertStore {
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
       val logEntry = StringBuilder().apply {
         append("[${alert.timestamp.format(formatter)}] ")
-        append("EVENT: ${alert.type} | ")
-        append("RAW: ${alert.title}\n")
+        append("type: ${alert.type} | ")
+        append("text: ${alert.text}\n")
       }.toString()
 
       FileOutputStream(file, true).use { it.write(logEntry.toByteArray()) }

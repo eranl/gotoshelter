@@ -17,7 +17,7 @@
   <string name="no_alerts">No alerts</string>
   <string name="no_alerts_desc">Any urgent alerts received will appear here</string>
   <string name="alert_prefix">Alert - %1$s</string>
-  <string name="title">Additional Data</string>
+  <string name="text">Additional Data</string>
 
   <string name="monitoring_service_title">Real-time Alert Monitor</string>
   <string name="monitoring_service_desc">Connected to Tzofar for alerts</string>

@@ -162,7 +162,7 @@ class EmergencyAlertListenerService : NotificationListenerService() {
     AlertStore.addAlert(
       context = this,
       type = getString(R.string.type_notification),
-      title = "$title $text"
+      text = "$title $text"
     )
 
     // Trigger driving check and potential navigation

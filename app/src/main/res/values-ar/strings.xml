@@ -17,7 +17,7 @@
   <string name="no_alerts">لا توجد تنبيهات</string>
   <string name="no_alerts_desc">ستظهر هنا أي تنبيهات عاجلة يتم استلامها</string>
   <string name="alert_prefix">تنبيه - %1$s</string>
-  <string name="title">بيانات إضافية</string>
+  <string name="text">بيانات إضافية</string>
 
   <string name="monitoring_service_title">مراقب التنبيهات في الوقت الفعلي</string>
   <string name="monitoring_service_desc">متصل بـ Tzofar للتنبيهات</string>

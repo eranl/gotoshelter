@@ -17,7 +17,7 @@
   <string name="no_alerts">Нет оповещений</string>
   <string name="no_alerts_desc">Здесь будут отображаться все полученные срочные оповещения</string>
   <string name="alert_prefix">Оповещение - %1$s</string>
-  <string name="title">Дополнительные данные</string>
+  <string name="text">Дополнительные данные</string>
 
   <string name="monitoring_service_title">Мониторинг оповещений в реальном времени</string>
   <string name="monitoring_service_desc">Подключено к Tzofar для оповещений</string>
