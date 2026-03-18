@@ -143,7 +143,7 @@ class EmergencyAlertListenerService : NotificationListenerService() {
     Log.d(TAG, "Notification Listener Disconnected")
   }
 
-  private val alertTitles = setOf("מבזק | באזורך", "News Flash | In your area")
+  private val alertTitles = setOf("מבזק | באזורך", "News Flash | In your area", "عاجل | في منطقتك")
 
   override fun onNotificationPosted(sbn: StatusBarNotification) {
     val packageName = sbn.packageName

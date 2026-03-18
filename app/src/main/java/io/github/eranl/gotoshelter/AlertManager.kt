@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
-import android.util.Log.e
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.google.android.gms.location.ActivityRecognition
@@ -42,12 +41,9 @@ object AlertManager {
    */
   @SuppressLint("MissingPermission")
   fun onEmergencyAlert(context: Context, type: String, text: String) {
-    Log.d(TAG, "Emergency alert received. Checking driving status...")
+    Log.d(TAG, "Emergency alert received: $type | $text")
 
-    // save to app files only in debug versions
-    if (DEBUG) {
-      appendAlertToFile(context, type, text)
-    }
+    appendAlertToFile(context, type, text)
 
     val hasPermission = if (Build.VERSION.SDK_INT >= 29) {
       ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED
@@ -85,7 +81,12 @@ object AlertManager {
       }
   }
 
+  // save to app files only in debug versions
   fun appendAlertToFile(context: Context, type: String, text: String) {
+    if (! DEBUG) {
+      return
+    }
+
     try {
       val file = File(context.getExternalFilesDir(null), ALERTS_FILE_NAME)
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")

@@ -5,6 +5,7 @@
   <string name="intro_description">يقوم إلى الملجأ بمراقبة إنذارات الطوارئ في الوقت الفعلي. عند اكتشاف إنذار، يقوم تلقائيًا بتشغيل Waze أو خرائط Google لتوجيهك إلى أقرب ملجأ.</string>
   <string name="tzofar_alerts_title">تنبيهات "تسوفار"</string>
   <string name="tzofar_alerts_description">لتلقي التنبيهات من "تسوفار"، يجب منح إذن الموقع والإشعارات. سيتم استخدام الموقع فقط عند تلقي تنبيه للتحقق مما إذا كان مناسبًا لمنطقتك.</string>
+  <string name="background_location_description">لتلقي تنبيهات من "تسوفار" بشكل موثوق، اختر "السماح طوال الوقت" في إعدادات الموقع. سيتم فحص الموقع فقط عند تلقي تنبيه.</string>
   <string name="hfc_alerts_title">تنبيهات "قيادة الجبهة الداخلية"</string>
   <string name="hfc_alerts_description">لتلقي التنبيهات من "قيادة الجبهة الداخلية"، يجب منح الوصول إلى الإشعارات.</string>
   <string name="activity_permission">كشف القيادة</string>

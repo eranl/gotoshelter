@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
@@ -107,8 +108,10 @@ class EmergencyMonitorService : Service() {
         this,
         FOREGROUND_NOTIFICATION_ID,
         notification,
-        ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+        ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
       )
+    } else if (Build.VERSION.SDK_INT >= 29) {
+      startForeground(FOREGROUND_NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION)
     } else {
       startForeground(FOREGROUND_NOTIFICATION_ID, notification)
     }
@@ -141,17 +144,28 @@ class EmergencyMonitorService : Service() {
     val intent = Intent(this, MainActivity::class.java).apply {
       flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
     }
+    
+    val flags = if (Build.VERSION.SDK_INT >= 23) {
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    } else {
+      PendingIntent.FLAG_UPDATE_CURRENT
+    }
+    
     val pendingIntent = PendingIntent.getActivity(
       this,
       0,
       intent,
-      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      flags
     )
+
+    // Load the app icon as a bitmap for the large icon
+    val largeIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
 
     return NotificationCompat.Builder(this, MONITOR_CHANNEL_ID)
       .setContentTitle(getString(R.string.app_name))
       .setContentText(getString(R.string.monitoring_service_desc))
-      .setSmallIcon(android.R.drawable.stat_sys_warning)
+      .setSmallIcon(R.drawable.ic_notification)
+      .setLargeIcon(largeIcon)
       .setOngoing(true)
       .setPriority(NotificationCompat.PRIORITY_LOW)
       .setContentIntent(pendingIntent)

@@ -75,6 +75,15 @@ fun SettingsScreen() {
   var locationGranted by remember {
     mutableStateOf(checkPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION))
   }
+  var backgroundLocationGranted by remember {
+    mutableStateOf(
+      if (Build.VERSION.SDK_INT >= 29) {
+        checkPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+      } else {
+        true
+      }
+    )
+  }
   var notificationsGranted by remember {
     mutableStateOf(
       if (Build.VERSION.SDK_INT >= 33) {
@@ -96,6 +105,12 @@ fun SettingsScreen() {
       notificationsGranted = permissions[Manifest.permission.POST_NOTIFICATIONS] ?: notificationsGranted
     }
     locationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: locationGranted
+  }
+
+  val backgroundLocationLauncher = rememberLauncherForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { granted ->
+    backgroundLocationGranted = granted
   }
 
   Scaffold(
@@ -142,18 +157,27 @@ fun SettingsScreen() {
         }
       )
 
-      // 2. Tzofar (Location & Notifications)
-      val allTzofarGranted = locationGranted && notificationsGranted
+      // 2. Tzofar (Location & Notifications & Background)
+      val basicTzofarGranted = locationGranted && notificationsGranted
+      val allTzofarGranted = basicTzofarGranted && backgroundLocationGranted
       PermissionRow(
         title = stringResource(R.string.tzofar_alerts_title),
-        description = stringResource(R.string.tzofar_alerts_description),
+        description = if (basicTzofarGranted && !backgroundLocationGranted) {
+          stringResource(R.string.background_location_description)
+        } else {
+          stringResource(R.string.tzofar_alerts_description)
+        },
         isGranted = allTzofarGranted,
         onClick = {
-          val permissions = mutableListOf(Manifest.permission.ACCESS_COARSE_LOCATION)
-          if (Build.VERSION.SDK_INT >= 33) {
-            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+          if (! basicTzofarGranted) {
+            val permissions = mutableListOf(Manifest.permission.ACCESS_COARSE_LOCATION)
+            if (Build.VERSION.SDK_INT >= 33) {
+              permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+            launcher.launch(permissions.toTypedArray())
+          } else if (!backgroundLocationGranted) {
+            backgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
           }
-          launcher.launch(permissions.toTypedArray())
         }
       )
 
@@ -172,7 +196,7 @@ fun SettingsScreen() {
       Spacer(modifier = Modifier.height(32.dp))
 
       Button(
-        onClick = { AlertManager.onEmergencyAlert(context, "test", "test") },
+        onClick = { AlertManager.triggerNavigation(context) },
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
       ) {
@@ -216,6 +240,9 @@ fun SettingsScreen() {
     while (true) {
       notificationListenerGranted = isNotificationServiceEnabled(context)
       locationGranted = checkPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+      if (Build.VERSION.SDK_INT >= 29) {
+        backgroundLocationGranted = checkPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+      }
       if (Build.VERSION.SDK_INT >= 33) {
         notificationsGranted = checkPermission(context, Manifest.permission.POST_NOTIFICATIONS)
       }

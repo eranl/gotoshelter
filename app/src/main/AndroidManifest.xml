@@ -11,12 +11,14 @@
           android:name="android.permission.FOREGROUND_SERVICE"
           tools:ignore="ForegroundServiceType" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
 
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
   <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
   <uses-feature
           android:name="android.hardware.telephony"
@@ -73,7 +75,7 @@
             android:name=".service.EmergencyMonitorService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="specialUse">
+            android:foregroundServiceType="specialUse|location">
       <property
               android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
               android:value="Real-time emergency alert monitoring for life safety" />
