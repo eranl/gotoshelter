@@ -45,6 +45,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -53,6 +55,7 @@ import io.github.eranl.gotoshelter.R
 import io.github.eranl.gotoshelter.service.EmergencyAlertListenerService
 import io.github.eranl.gotoshelter.service.EmergencyMonitorService
 import io.github.eranl.gotoshelter.ui.components.AppTopBar
+import io.github.eranl.gotoshelter.ui.theme.GoToShelterTheme
 import io.github.eranl.gotoshelter.ui.theme.SuccessGreen
 import kotlinx.coroutines.delay
 
@@ -129,7 +132,17 @@ fun SettingsScreen() {
 
       Spacer(modifier = Modifier.height(24.dp))
 
-      // 1. Tzofar (Location & Notifications)
+      // 1. Home Front Command (Notification Access)
+      PermissionRow(
+        title = stringResource(R.string.hfc_alerts_title),
+        description = stringResource(R.string.hfc_alerts_description),
+        isGranted = notificationListenerGranted,
+        onClick = {
+          context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        }
+      )
+
+      // 2. Tzofar (Location & Notifications)
       val allTzofarGranted = locationGranted && notificationsGranted
       PermissionRow(
         title = stringResource(R.string.tzofar_alerts_title),
@@ -141,16 +154,6 @@ fun SettingsScreen() {
             permissions.add(Manifest.permission.POST_NOTIFICATIONS)
           }
           launcher.launch(permissions.toTypedArray())
-        }
-      )
-
-      // 2. Home Front Command (Notification Access)
-      PermissionRow(
-        title = stringResource(R.string.hfc_alerts_title),
-        description = stringResource(R.string.hfc_alerts_description),
-        isGranted = notificationListenerGranted,
-        onClick = {
-          context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
       )
 
@@ -177,6 +180,16 @@ fun SettingsScreen() {
         Spacer(Modifier.width(8.dp))
         Text(stringResource(R.string.test_waze_button))
       }
+
+      Spacer(modifier = Modifier.height(32.dp))
+
+      Text(
+        text = stringResource(R.string.supplementary_note),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(horizontal = 16.dp)
+      )
 
       Spacer(modifier = Modifier.height(32.dp))
 
@@ -272,3 +285,31 @@ private fun isNotificationServiceEnabled(context: Context): Boolean {
   }
   return false
 }
+
+/**
+ * Previews for generating Play Store screenshots for different devices.
+ * Open this file and use the Design tab to see and export screenshots.
+ */
+@Preview(device = Devices.PIXEL_7_PRO, name = "Phone 6.5", showBackground = true)
+ @Composable
+ fun PhoneScreenshot() {
+   GoToShelterTheme {
+     SettingsScreen()
+   }
+ }
+
+ @Preview(device = Devices.PIXEL_TABLET, name = "Tablet 7-inch", showBackground = true)
+ @Composable
+ fun Tablet7Screenshot() {
+   GoToShelterTheme {
+     SettingsScreen()
+   }
+ }
+
+ @Preview(device = Devices.NEXUS_10, name = "Tablet 10-inch", showBackground = true)
+ @Composable
+ fun Tablet10Screenshot() {
+   GoToShelterTheme {
+     SettingsScreen()
+   }
+ }

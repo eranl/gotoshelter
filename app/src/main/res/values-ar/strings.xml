@@ -15,10 +15,11 @@
   <string name="approve_button">موافقة</string>
 
   <string name="monitoring_service_title">مراقب التنبيهات في الوقت الفعلي</string>
-  <string name="monitoring_service_desc">متصل بـ צופר للتنبيهات</string>
+  <string name="monitoring_service_desc">متصل بـ צوفر للتنبيهات</string>
   <string name="error_install_navigation_app">يرجى تثبيت Waze أو خرائط Google للتنقل إلى الملجأ</string>
   <string name="privacy_note">هذا التطبيق لا يقوم بتخزين أو نقل أي بيانات. الكود مفتوح المصدر ومتاح على GitHub.</string>
 
   <string name="exit_app">خروج من التطبيق</string>
   <string name="granted">تم المنح</string>
+  <string name="supplementary_note">هذا التطبيق هو أداة تكميلية ويجب استخدامه جنبًا إلى جنب مع التنبيهات والتعليمات الحكومية الرسمية.</string>
 </resources>

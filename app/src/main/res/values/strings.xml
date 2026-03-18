@@ -22,4 +22,5 @@
 
   <string name="exit_app">Exit App</string>
   <string name="granted">Granted</string>
+  <string name="supplementary_note">This app is a supplementary tool and should be used alongside official government alerts and instructions.</string>
 </resources>
