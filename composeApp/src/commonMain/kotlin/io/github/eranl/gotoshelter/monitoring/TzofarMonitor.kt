@@ -1,0 +1,128 @@
+/*
+ * Copyright 2026 Eran L.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.eranl.gotoshelter.monitoring
+
+import androidx.compose.ui.text.intl.Locale
+import io.github.eranl.gotoshelter.AlertManager
+import io.github.eranl.gotoshelter.util.LocationHelper
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.plugins.websocket.wss
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.websocket.Frame
+import io.ktor.websocket.readText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlin.random.Random
+
+/**
+ * Multi-platform monitor for Tzofar emergency alerts.
+ * Uses Ktor WebSockets to connect and kotlinx.serialization for parsing.
+ */
+class TzofarMonitor(
+  private val scope: CoroutineScope
+) {
+  private val client = HttpClient {
+    install(WebSockets) {
+      pingIntervalMillis = 45000
+    }
+  }
+
+  private var monitoringJob: Job? = null
+
+  fun start() {
+    if (monitoringJob?.isActive == true) return
+
+    monitoringJob = scope.launch {
+      while (isActive) {
+        try {
+          connectAndListen()
+        } catch (e: Exception) {
+          println("TzofarMonitor: Connection error: ${e.message}. Retrying in 5s...")
+          delay(5000)
+        }
+      }
+    }
+  }
+
+  private suspend fun connectAndListen() {
+    // Use wss for secure connection to avoid CLEARTEXT policy errors
+    client.wss(
+      method = HttpMethod.Get,
+      host = "ws.tzevaadom.co.il",
+      path = "/socket?platform=ANDROID",
+      request = {
+        header(HttpHeaders.UserAgent, "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36")
+        // Ktor uses 'Referrer' (correct spelling) instead of 'Referer'
+        header(HttpHeaders.Referrer, "https://www.tzevaadom.co.il")
+        header(HttpHeaders.Origin, "https://www.tzevaadom.co.il")
+        header("tzofar", generateTzofarToken())
+      }
+    ) {
+      println("TzofarMonitor: Connected to WebSocket")
+      for (frame in incoming) {
+        if (frame is Frame.Text) {
+          handleMessage(frame.readText())
+        }
+      }
+    }
+  }
+
+  suspend fun handleMessage(text: String) {
+    val json = Json.parseToJsonElement(text).jsonObject
+    if (json["type"]!!.jsonPrimitive.content != "SYSTEM_MESSAGE") return
+
+    val data = json["data"]!!.jsonObject
+    if (data["instructionType"]!!.jsonPrimitive.int != 0) return
+
+    val cityIds = data["citiesIds"]!!.jsonArray.map { it.jsonPrimitive.int }
+
+    if (LocationHelper.isLocationInArea(cityIds)) {
+      val title = data["title${
+        when (Locale.current.language) {
+          "iw", "he" -> "He"
+          "ar" -> "Ar"
+          "ru" -> "Ru"
+          else -> "En"
+        }
+      }"]!!.jsonPrimitive.content
+      AlertManager.onEmergencyAlert("צופר", title)
+    } else {
+      AlertManager.appendAlertToFile("raw Tzofar", "$cityIds")
+    }
+  }
+
+  private fun generateTzofarToken(): String {
+    val chars = "0123456789abcdef"
+    return (1..32).map { chars[Random.nextInt(chars.length)] }.joinToString("")
+  }
+
+  fun stop() {
+    monitoringJob?.cancel()
+    client.close()
+  }
+}

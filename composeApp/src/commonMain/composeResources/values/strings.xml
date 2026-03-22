@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">GoToShelter</string>
+  <string name="intro_title">Automate Navigation to Shelters</string>
+  <string name="intro_description">GoToShelter monitors emergency early warnings in real time. When a warning is detected, it automatically launches Waze or Google Maps to navigate you to the nearest shelter.</string>
+  <string name="tzofar_alerts_title">Tzofar Alerts</string>
+  <string name="tzofar_alerts_description">To receive alerts from Tzofar, grant location and notifications permissions. Location will only be used when an alert is received to check if it applies to your location.</string>
+  <string name="tzofar_alerts_description_notifications">To receive alerts from Tzofar, grant notifications permission.</string>
+  <string name="tzofar_alerts_description_location">To receive alerts from Tzofar, grant location permission. Location will only be used when an alert is received to check if it applies to your location.</string>
+  <string name="background_location_description">To receive alerts from Tzofar reliably, choose "Allow all the time" in settings. Location will only be used when an alert is received to check if it applies to your location.</string>
+  <string name="hfc_alerts_title">Home Front Command Alerts</string>
+  <string name="hfc_alerts_description">To receive alerts from Home Front Command, grant notification access.</string>
+  <string name="activity_permission">Driving Detection</string>
+  <string name="activity_description">To start Waze only when driving, grant physical activity permission. It will only be used when an alert is received for your location.</string>
+  <string name="overlay_permission_title">Display Over Other Apps</string>
+  <string name="overlay_permission_description">This permission is required for automatic navigation launch. It allows the app to start Waze immediately when an alert is received.</string>
+  <string name="test_waze_button">Test Waze Launch</string>
+  <string name="approve_button">Grant</string>
+
+  <string name="error_install_navigation_app">Waze or Google Maps has to be installed in order to use this app</string>
+  <string name="privacy_note">This app does not store or transmit any data. It is open source and available on GitHub.</string>
+
+  <string name="exit_app">Exit App</string>
+  <string name="granted">Granted</string>
+  <string name="supplementary_note">This app is a supplementary tool and should be used alongside official government alerts and instructions.</string>
+
+  <string name="battery_optimization_title">Battery Optimization</string>
+  <string name="battery_optimization_description">Disabling battery optimization is required in order to ensure that the app receives alerts reliably in the background</string>
+
+  <string name="no_services_enabled_description">At least one alert service (Home Front Command or Tzofar) has to be enabled in order to use this app</string>
+  <string name="app_not_active_title">App is Not Active</string>
+</resources>

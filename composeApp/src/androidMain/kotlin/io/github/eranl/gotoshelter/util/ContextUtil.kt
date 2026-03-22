@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.eranl.gotoshelter
+package io.github.eranl.gotoshelter.util
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 
-class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
-
-    setContent {
-      App(onExit = { finish() })
-    }
-  }
+/**
+ * Checks if the notification listener service for this app is enabled in the system settings.
+ */
+fun Context.isNotificationServiceEnabled(): Boolean {
+  return NotificationManagerCompat.getEnabledListenerPackages(this)
+    .contains(packageName)
 }

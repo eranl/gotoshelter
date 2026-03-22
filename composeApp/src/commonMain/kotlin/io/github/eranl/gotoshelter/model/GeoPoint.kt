@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.eranl.gotoshelter
+package io.github.eranl.gotoshelter.model
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import kotlinx.serialization.Serializable
 
-class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
-
-    setContent {
-      App(onExit = { finish() })
-    }
-  }
-}
+@Serializable
+data class GeoPoint(val latitude: Double, val longitude: Double)

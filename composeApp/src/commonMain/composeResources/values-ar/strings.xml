@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">إلى الملجأ</string>
+  <string name="intro_title">أتمتة الملاحة إلى الملاجئ</string>
+  <string name="intro_description">يقوم تطبيق "إلى الملجأ" بمراقبة الإنذارات المبكرة للطوارئ في الوقت الفعلي. عند اكتشاف إنذار، فإنه يقوم تلقائيًا بتشغيل Waze أو خرائط Google لتوجيهك إلى أقرب ملجأ.</string>
+  <string name="tzofar_alerts_title">تنبيهات صوفار</string>
+  <string name="tzofar_alerts_description">لتلقي التنبيهات من صوفار، امنح أذونات الموقع والإشعارات. سيتم استخدام الموقع فقط عند استلام تنبيه للتحقق مما إذا كان ينطبق على موقعك.</string>
+  <string name="tzofar_alerts_description_notifications">لتلقي التنبيهات من صوفار، امنح إذن الإشعارات.</string>
+  <string name="tzofar_alerts_description_location">لتلقي التنبيهات من صوفار، امنح إذن الموقع. سيتم استخدام الموقع فقط عند استلام تنبيه للتحقق مما إذا كان ينطبق على موقعك.</string>
+  <string name="background_location_description">لتلقي التنبيهات من صوفار بشكل موثوق، اختر "السماح طوال الوقت" في الإعدادات. سيتم استخدام الموقع فقط عند استلام تنبيه للتحقق مما إذا كان ينطبق على موقعك.</string>
+  <string name="hfc_alerts_title">تنبيهات قيادة الجبهة الداخلية</string>
+  <string name="hfc_alerts_description">لتلقي التنبيهات من قيادة الجبهة الداخلية، امنح إمكانية الوصول إلى الإشعارات.</string>
+  <string name="activity_permission">كشف القيادة</string>
+  <string name="activity_description">لبدء Waze فقط عند القيادة، امنح إذن النشاط البدني. سيتم استخدامه فقط عند استلام تنبيه لموقعك.</string>
+  <string name="overlay_permission_title">العرض فوق التطبيقات الأخرى</string>
+  <string name="overlay_permission_description">هذا الإذن مطلوب لبدء الملاحة التلقائي. يسمح للتطبيق ببدء Waze فور استلام التنبيه.</string>
+  <string name="test_waze_button">اختبار تشغيل Waze</string>
+  <string name="approve_button">منح</string>
+
+  <string name="error_install_navigation_app">يجب تثبيت Waze أو خرائط Google لاستخدام هذا التطبيق</string>
+  <string name="privacy_note">هذا التطبيق لا يخزن أو ينقل أي بيانات. إنه مفتوح المصدر ومتاح على GitHub.</string>
+
+  <string name="exit_app">إغلاق التطبيق</string>
+  <string name="granted">تم المنح</string>
+  <string name="supplementary_note">هذا التطبيق هو أداة تكميلية ويجب استخدامه جنبًا إلى جنب مع التنبيهات والتعليمات الحكومية الرسمية.</string>
+
+  <string name="battery_optimization_title">تحسين البطارية</string>
+  <string name="battery_optimization_description">مطلوب تعطيل تحسين البطارية لضمان تلقي التطبيق للتنبيهات بشكل موثوق في الخلفية</string>
+
+  <string name="no_services_enabled_description">يجب تمكين خدمة تنبيه واحدة على الأقل (قيادة الجبهة الداخلية أو صوفار) لاستخدام هذا التطبيق</string>
+  <string name="app_not_active_title">التطبيق غير نشط</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">GoToShelter</string>
+  <string name="monitoring_service_title">Real-time Alert Monitoring</string>
+  <string name="monitoring_service_desc">Connected to Tzofar for alerts</string>
+</resources>

@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.eranl.gotoshelter
+package io.github.eranl.gotoshelter.util
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-
-class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
-
-    setContent {
-      App(onExit = { finish() })
-    }
-  }
-}
+/**
+ * Package name for the official Home Front Command (Pikud HaOref) application.
+ */
+const val HFC_PACKAGE_NAME = "com.alert.meserhadash"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">إلى الملجأ</string>
+  <string name="monitoring_service_title">مراقبة التنبيهات في الوقت الفعلي</string>
+  <string name="monitoring_service_desc">متصل بـ صوفار للتنبيهات</string>
+</resources>

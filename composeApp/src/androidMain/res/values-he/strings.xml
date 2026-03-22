@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">סעו למקלט</string>
+  <string name="monitoring_service_title">ניטור התראות בזמן אמת</string>
+  <string name="monitoring_service_desc">מחובר לצופר לקבלת התראות</string>
+</resources>

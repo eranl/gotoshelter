@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">В укрытие</string>
+  <string name="monitoring_service_title">Мониторинг оповещений в реальном времени</string>
+  <string name="monitoring_service_desc">Подключено к Цофар для получения оповещений</string>
+</resources>
