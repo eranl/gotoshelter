@@ -16,6 +16,11 @@ compose-material3 = "1.3.1"
 kotlinx-serialization = "1.8.0"
 ktor = "3.0.3"
 kotlinx-datetime = "0.6.1"
+googleServices = "4.4.4"
+firebaseCrashlyticsPlugin = "3.0.6"
+firebaseCrashlyticsSdk = "18.6.0"
+firebaseBom = "32.7.0"
+multiplatformSettings = "1.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +45,10 @@ ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.r
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlyticsSdk" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+multiplatform-settings = { group = "com.russhwolf", name = "multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 
 [bundles]
 ktor-common = ["ktor-client-core", "ktor-client-websockets"]
@@ -52,3 +61,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }

@@ -22,11 +22,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import io.github.eranl.gotoshelter.monitoring.Logger
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
+    
+    // Initialize Error Tracking
+    Logger.addReporter(CrashlyticsReporter())
+    Logger.logMessage("App started")
 
     enableEdgeToEdge(
       navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)

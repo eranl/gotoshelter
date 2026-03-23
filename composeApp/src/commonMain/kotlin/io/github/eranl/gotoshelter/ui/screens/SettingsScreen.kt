@@ -17,6 +17,7 @@
 package io.github.eranl.gotoshelter.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,14 +44,19 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -64,6 +70,8 @@ import gotoshelter.composeapp.generated.resources.approve_button
 import gotoshelter.composeapp.generated.resources.background_location_description
 import gotoshelter.composeapp.generated.resources.battery_optimization_description
 import gotoshelter.composeapp.generated.resources.battery_optimization_title
+import gotoshelter.composeapp.generated.resources.error_reporting_description
+import gotoshelter.composeapp.generated.resources.error_reporting_title
 import gotoshelter.composeapp.generated.resources.granted
 import gotoshelter.composeapp.generated.resources.hfc_alerts_description
 import gotoshelter.composeapp.generated.resources.hfc_alerts_title
@@ -84,6 +92,8 @@ import io.github.eranl.gotoshelter.AppPermission
 import io.github.eranl.gotoshelter.AppStatus
 import io.github.eranl.gotoshelter.Platform
 import io.github.eranl.gotoshelter.getPlatform
+import io.github.eranl.gotoshelter.monitoring.Logger
+import io.github.eranl.gotoshelter.monitoring.SettingsProvider
 import io.github.eranl.gotoshelter.ui.components.AppTopBar
 import io.github.eranl.gotoshelter.ui.theme.SuccessGreen
 import org.jetbrains.compose.resources.StringResource
@@ -92,9 +102,20 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SettingsScreen(platform: Platform = getPlatform()) {
   val status by platform.status.collectAsState()
+  val errorReportingEnabled by if (LocalInspectionMode.current) {
+    remember { mutableStateOf(false) }
+  } else {
+    SettingsProvider.errorReportingEnabled.collectAsState()
+  }
+
   platform.BindPermissionHandler()
 
-  SettingsContent(status, platform)
+  SettingsContent(
+    status = status,
+    errorReportingEnabled = errorReportingEnabled,
+    onToggleErrorReporting = { Logger.setCollectionEnabled(it) },
+    platform = platform
+  )
 }
 
 @Composable
@@ -104,8 +125,12 @@ private fun StringResource.safe(fallback: String): String =
 @Composable
 fun SettingsContent(
   status: AppStatus,
+  errorReportingEnabled: Boolean = false,
+  onToggleErrorReporting: (Boolean) -> Unit = {},
   platform: Platform? = null
 ) {
+  var debugClickCount by remember { mutableStateOf(0) }
+
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
@@ -128,7 +153,17 @@ fun SettingsContent(
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier
+          .padding(bottom = 8.dp)
+          .pointerInput(Unit) {
+            detectTapGestures(onTap = {
+              debugClickCount++
+              if (debugClickCount >= 5) {
+                debugClickCount = 0
+                throw RuntimeException("Test Crash triggered by user")
+              }
+            })
+          }
       )
 
       Text(
@@ -153,9 +188,7 @@ fun SettingsContent(
       Spacer(modifier = Modifier.height(24.dp))
 
       Column(
-        modifier = Modifier
-          .fillMaxWidth()
-          .alpha(if (status.overlayBatteryMissing) 0.5f else 1f),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
       ) {
         // 1. Home Front Command (Notification Access)
@@ -218,6 +251,14 @@ fun SettingsContent(
             }
           )
         }
+
+        // 4. Error Reporting
+        ReportingRow(
+            title = Res.string.error_reporting_title.safe("Error Reporting"),
+            description = Res.string.error_reporting_description.safe("Error Desc"),
+            isGranted = errorReportingEnabled,
+            onToggle = { Logger.setCollectionEnabled(it) }
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -379,5 +420,40 @@ fun PermissionRow(
         Text(Res.string.approve_button.safe("Grant"), fontSize = 12.sp)
       }
     }
+  }
+}
+
+@Composable
+fun ReportingRow(
+  title: String,
+  description: String,
+  isGranted: Boolean,
+  onToggle: (Boolean) -> Unit
+) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(vertical = 12.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    Column(modifier = Modifier.weight(1f)) {
+      Text(
+        text = title,
+        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.bodyLarge,
+        textAlign = TextAlign.Start
+      )
+      Text(
+        text = description,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.Start
+      )
+    }
+    Spacer(Modifier.width(8.dp))
+    Switch(
+      checked = isGranted,
+      onCheckedChange = onToggle
+    )
   }
 }

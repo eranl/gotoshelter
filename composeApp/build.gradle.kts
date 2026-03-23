@@ -38,6 +38,7 @@ kotlin {
       implementation(libs.kotlinx.serialization.json)
       implementation(libs.kotlinx.datetime)
       implementation(libs.bundles.ktor.common)
+      implementation(libs.multiplatform.settings)
     }
     val commonTest by getting {
       dependencies {
@@ -60,6 +61,9 @@ kotlin {
       api(libs.androidx.compose.ui.tooling.preview)
       // Use debugApi for tooling to ensure it's available in the app module's debug build
       api(libs.androidx.compose.ui.tooling)
+      
+      // Firebase dependencies
+      implementation(libs.firebase.crashlytics)
     }
     iosMain.dependencies {
       implementation(libs.ktor.client.darwin)

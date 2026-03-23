@@ -14,11 +14,13 @@
   <string name="activity_description">لبدء Waze فقط عند القيادة، امنح إذن النشاط البدني. سيتم استخدامه فقط عند استلام تنبيه لموقعك.</string>
   <string name="overlay_permission_title">العرض فوق التطبيقات الأخرى</string>
   <string name="overlay_permission_description">هذا الإذن مطلوب لبدء الملاحة التلقائي. يسمح للتطبيق ببدء Waze فور استلام التنبيه.</string>
+  <string name="error_reporting_title">تقارير الأخطاء المجهولة</string>
+  <string name="error_reporting_description">ساعدنا في تحسين التطبيق من خلال مشاركة تقارير الأعطال المجهولة. لا يتم جمع أي بيانات شخصية أو بيانات تحدد هوية الجهاز.</string>
   <string name="test_waze_button">اختبار تشغيل Waze</string>
   <string name="approve_button">منح</string>
 
   <string name="error_install_navigation_app">يجب تثبيت Waze أو خرائط Google لاستخدام هذا التطبيق</string>
-  <string name="privacy_note">هذا التطبيق لا يخزن أو ينقل أي بيانات. إنه مفتوح المصدر ومتاح على GitHub.</string>
+  <string name="privacy_note">هذا التطبيق لا يخزن أو ينقل أي بيانات، باستثناء تقارير الأخطاء المجهولة إذا اخترت ذلك. إنه مفتوح المصدر ومتاح على GitHub.</string>
 
   <string name="exit_app">إغلاق التطبيق</string>
   <string name="granted">تم المنح</string>
