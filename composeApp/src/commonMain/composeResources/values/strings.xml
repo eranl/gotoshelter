@@ -22,7 +22,7 @@
 
   <string name="exit_app">Exit App</string>
   <string name="granted">Granted</string>
-  <string name="supplementary_note">GoToShelter is an independent tool and does NOT represent or have any affiliation with any government entity. This app provides supplementary alerts by monitoring official notification channels, such as the Israel Home Front Command (https://www.oref.org.il/). Always follow official instructions from government authorities during emergencies.</string>
+  <string name="supplementary_note">GoToShelter is an independent tool and does NOT represent or have any affiliation with any government entity. This app provides supplementary alerts by monitoring notifications from the official Home Front Command application and Tzofar. Always follow official instructions from government authorities during emergencies.</string>
 
   <string name="battery_optimization_title">Battery Optimization</string>
   <string name="battery_optimization_description">Disabling battery optimization is required in order to ensure that the app receives alerts reliably in the background</string>

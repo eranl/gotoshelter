@@ -4,11 +4,14 @@ KEY FEATURES:
 • Instant Automation: Automatically triggers navigation the moment an alert is detected.
 • Hands-Free Safety: Designed specifically for drivers who need to keep their hands on the wheel and eyes on the road during an emergency.
 • Smart Filtering: Uses your approximate location to ensure you are only alerted if the threat is relevant to your current area.
-• Dual-Source Monitoring: Connects directly to real-time alert streams and monitors official government notification channels (e.g., Home Front Command) for maximum reliability.
+• Dual-Source Monitoring: Monitors notifications from the official Home Front Command application and the reliable third-party alert service (Tzofar) for maximum reliability.
 • Choose Your Navigator: Works seamlessly with Waze and Google Maps.
 
 DISCLAIMER & SOURCE OF INFORMATION:
-GoToShelter is an independent, open-source tool and does NOT represent, and has no affiliation with, any government entity. This app provides supplementary safety alerts by monitoring official government notification channels, specifically the Israel Home Front Command (https://www.oref.org.il/). This app is intended as a supplementary safety tool only; always prioritize and follow the official alerts and instructions provided by government authorities during emergencies.
+GoToShelter is an independent, open-source tool and does NOT represent, and has no affiliation with, any government entity.
+OFFICIAL SOURCE: This app provides supplementary alerts by monitoring notifications from the official Home Front Command (Pikud HaOref) mobile application. Official government information can be verified at https://www.oref.org.il/.
+THIRD-PARTY SOURCE: The app also monitors notifications from the Tzofar application and connects to the Tzofar WebSocket API (https://ws.tzevaadom.co.il/) for real-time redundancy.
+Always prioritize and follow the official alerts and instructions provided by government authorities during emergencies.
 
 PRIVACY & TRANSPARENCY:
 Your safety and privacy are our top priorities.
