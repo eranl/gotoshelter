@@ -17,13 +17,13 @@
 package io.github.eranl.gotoshelter.ui.theme
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Build
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -43,18 +43,26 @@ actual fun GoToShelterTheme(
     else -> null
   }
 
-  if (colorScheme != null) {
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-      SideEffect {
-        val window = (view.context as Activity).window
-        window.statusBarColor = colorScheme.background.toArgb()
-        window.navigationBarColor = colorScheme.background.toArgb()
-        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-        WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
+  val view = LocalView.current
+  if (!view.isInEditMode) {
+    SideEffect {
+      val window = (view.context as Activity).window
+      val insetsController = WindowCompat.getInsetsController(window, view)
+      
+      // Ensure the bar colors are actually transparent at the window level
+      window.navigationBarColor = Color.TRANSPARENT
+      window.statusBarColor = Color.TRANSPARENT
+      
+      insetsController.isAppearanceLightStatusBars = !darkTheme
+      insetsController.isAppearanceLightNavigationBars = !darkTheme
+      
+      if (Build.VERSION.SDK_INT >= 29) {
+        window.isNavigationBarContrastEnforced = false
       }
     }
+  }
 
+  if (colorScheme != null) {
     MaterialTheme(
       colorScheme = colorScheme,
       typography = Typography,

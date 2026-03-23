@@ -1,0 +1,23 @@
+GoToShelter is a life-safety companion app designed to help drivers and commuters reach safety instantly during emergency rocket alerts. When every second counts, manually interacting with your phone to find a shelter is dangerous. GoToShelter automates this process by detecting incoming alerts and immediately launching your preferred navigation app (Waze or Google Maps) with directions to the nearest public shelter.
+
+KEY FEATURES:
+• Instant Automation: Automatically triggers navigation the moment an alert is detected.
+• Hands-Free Safety: Designed specifically for drivers who need to keep their hands on the wheel and eyes on the road during an emergency.
+• Smart Filtering: Uses your approximate location to ensure you are only alerted if the threat is relevant to your current area.
+• Dual-Source Monitoring: Connects directly to real-time alert streams and monitors official government notification channels (e.g., Home Front Command) for maximum reliability.
+• Choose Your Navigator: Works seamlessly with Waze and Google Maps.
+
+DISCLAIMER & SOURCE OF INFORMATION:
+GoToShelter is an independent, open-source tool and does NOT represent, and has no affiliation with, any government entity. This app provides supplementary safety alerts by monitoring official government notification channels, specifically the Israel Home Front Command (https://www.oref.org.il/). This app is intended as a supplementary safety tool only; always prioritize and follow the official alerts and instructions provided by government authorities during emergencies.
+
+PRIVACY & TRANSPARENCY:
+Your safety and privacy are our top priorities.
+• Local Processing: All location data is processed strictly on your device. We never upload, share, or sell your location or personal data.
+• Open Source: GoToShelter is fully open-source. Our code is transparent and can be audited by the community at: https://github.com/eranl/gotoshelter
+• Permissions: The app requires Notification Access and Approximate Location to function. These are used solely for alert detection and proximity calculations.
+
+HOW IT WORKS:
+1. Install the app and grant the necessary permissions.
+2. In the event of an alert in your area, GoToShelter will immediately wake your screen and start navigation to the closest safe zone.
+
+Note: This app is a supplementary tool and should be used alongside official government alerts and instructions.

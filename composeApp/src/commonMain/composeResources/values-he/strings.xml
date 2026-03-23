@@ -22,7 +22,7 @@
 
   <string name="exit_app">יציאה</string>
   <string name="granted">מאושר</string>
-  <string name="supplementary_note">אפליקציה זו היא כלי משלים ויש להשתמש בה לצד התראות והנחיות ממשלתיות רשמיות.</string>
+  <string name="supplementary_note">"סעו למקלט" הינה כלי עצמאי ואינה מייצגת או קשורה לישות ממשלתית כלשהי. אפליקציה זו מספקת התראות משלימות על ידי ניטור ערוצי דיווח רשמיים, כגון פיקוד העורף (https://www.oref.org.il/). יש להישמע תמיד להנחיות הרשמיות של רשויות המדינה בעת חירום.</string>
 
   <string name="battery_optimization_title">אופטימיזציית סוללה</string>
   <string name="battery_optimization_description">יש לבטל את אופטימיזציית הסוללה כדי להבטיח שהאפליקציה תקבל התראות באופן אמין ברקע</string>

@@ -22,7 +22,7 @@
 
   <string name="exit_app">إغلاق التطبيق</string>
   <string name="granted">تم المنح</string>
-  <string name="supplementary_note">هذا التطبيق هو أداة تكميلية ويجب استخدامه جنبًا إلى جنب مع التنبيهات والتعليمات الحكومية الرسمية.</string>
+  <string name="supplementary_note">تطبيق "إلى الملجأ" هو أداة مستقلة ولا يمثل أو يتبع أي جهة حكومية. يوفر هذا التطبيق تنبيهات تكميلية من خلال مراقبة قنوات الإشعارات الرسمية، مثل قيادة الجبهة الداخلية في إسرائيل (https://www.oref.org.il/). اتبع دائماً التعليمات الرسمية من السلطات الحكومية أثناء حالات الطوارئ.</string>
 
   <string name="battery_optimization_title">تحسين البطارية</string>
   <string name="battery_optimization_description">مطلوب تعطيل تحسين البطارية لضمان تلقي التطبيق للتنبيهات بشكل موثوق في الخلفية</string>

@@ -27,6 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
@@ -42,34 +44,28 @@ fun AppTopBar(
   navigationIcon: @Composable () -> Unit = {},
   actions: @Composable RowScope.() -> Unit = {}
 ) {
-  Surface(
-    shadowElevation = 8.dp,
-    tonalElevation = 4.dp,
-    color = MaterialTheme.colorScheme.primary,
-    contentColor = MaterialTheme.colorScheme.onPrimary
-  ) {
-    CenterAlignedTopAppBar(
-      title = {
-        Column(
-          horizontalAlignment = Alignment.CenterHorizontally,
-          verticalArrangement = Arrangement.Center
-        ) {
-          Text(
-            text = if (LocalInspectionMode.current) "GoToShelter" else stringResource(Res.string.app_name),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.ExtraBold,
-            letterSpacing = 0.5.sp
-          )
-        }
-      },
-      colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-        containerColor = Color.Transparent,
-        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-      ),
-      navigationIcon = navigationIcon,
-      actions = actions
-    )
-  }
+  CenterAlignedTopAppBar(
+    modifier = Modifier.shadow(8.dp),
+    title = {
+      Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+      ) {
+        Text(
+          text = if (LocalInspectionMode.current) "GoToShelter" else stringResource(Res.string.app_name),
+          style = MaterialTheme.typography.titleLarge,
+          fontWeight = FontWeight.ExtraBold,
+          letterSpacing = 0.5.sp
+        )
+      }
+    },
+    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+      containerColor = MaterialTheme.colorScheme.primary,
+      titleContentColor = MaterialTheme.colorScheme.onPrimary,
+      navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+      actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+    ),
+    navigationIcon = navigationIcon,
+    actions = actions
+  )
 }

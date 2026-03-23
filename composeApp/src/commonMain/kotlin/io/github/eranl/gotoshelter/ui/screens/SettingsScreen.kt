@@ -26,9 +26,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -111,16 +111,18 @@ fun SettingsContent(
     topBar = {
       AppTopBar()
     },
-    contentWindowInsets = WindowInsets.systemBars
+    contentWindowInsets = WindowInsets(0, 0, 0, 0)
   ) { innerPadding ->
     Column(
       modifier = Modifier
         .fillMaxSize()
-        .padding(innerPadding)
-        .padding(16.dp)
-        .verticalScroll(rememberScrollState()),
+        .padding(top = innerPadding.calculateTopPadding())
+        .verticalScroll(rememberScrollState())
+        .padding(horizontal = 16.dp),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
+      Spacer(modifier = Modifier.height(16.dp))
+
       Text(
         text = Res.string.intro_title.safe("Welcome"),
         style = MaterialTheme.typography.headlineSmall,
@@ -249,6 +251,9 @@ fun SettingsContent(
           textAlign = TextAlign.Center,
           modifier = Modifier.padding(horizontal = 16.dp)
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.navigationBarsPadding())
       }
     }
   }
@@ -371,7 +376,7 @@ fun PermissionRow(
         enabled = enabled,
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
       ) {
-        Text(Res.string.approve_button.safe("Approve"), fontSize = 12.sp)
+        Text(Res.string.approve_button.safe("Grant"), fontSize = 12.sp)
       }
     }
   }

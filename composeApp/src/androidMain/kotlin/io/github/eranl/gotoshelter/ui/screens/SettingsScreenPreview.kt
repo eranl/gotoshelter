@@ -36,7 +36,7 @@ fun SettingsScreenPreview() {
           AppPermission.BACKGROUND_LOCATION to false,
           AppPermission.POST_NOTIFICATIONS to true,
           AppPermission.NOTIFICATION_ACCESS to true,
-          AppPermission.OVERLAY to true,
+          AppPermission.OVERLAY to false,
           AppPermission.BATTERY_OPTIMIZATIONS to true
         ),
         runtimePermissions = setOf(

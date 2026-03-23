@@ -19,8 +19,10 @@ package io.github.eranl.gotoshelter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -81,12 +83,13 @@ fun NoNavigationAppScreen(onExit: () -> Unit) {
     modifier = Modifier.fillMaxSize(),
     topBar = {
       AppTopBar()
-    }
+    },
+    contentWindowInsets = WindowInsets(0, 0, 0, 0)
   ) { innerPadding ->
     Column(
       modifier = Modifier
         .fillMaxSize()
-        .padding(innerPadding)
+        .padding(top = innerPadding.calculateTopPadding())
         .padding(24.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center
@@ -104,6 +107,7 @@ fun NoNavigationAppScreen(onExit: () -> Unit) {
       ) {
         Text(stringResource(Res.string.exit_app), color = Color.White)
       }
+      Spacer(modifier = Modifier.navigationBarsPadding())
     }
   }
 }
