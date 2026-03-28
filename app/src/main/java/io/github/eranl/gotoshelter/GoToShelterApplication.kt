@@ -14,31 +14,16 @@
  * limitations under the License.
  */
 
-pluginManagement {
-  repositories {
-    google {
-      content {
-        includeGroupByRegex("com\\.android.*")
-        includeGroupByRegex("com\\.google.*")
-        includeGroupByRegex("androidx.*")
-      }
-    }
-    mavenCentral()
-    gradlePluginPortal()
-    mavenLocal()
-  }
-}
-plugins {
-  id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
-dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-  repositories {
-    google()
-    mavenCentral()
-    mavenLocal()
-  }
-}
+package io.github.eranl.gotoshelter
 
-include(":app")
-include(":composeApp")
+import android.app.Application
+import io.github.eranl.gotoshelter.monitoring.Logger
+
+class GoToShelterApplication : Application() {
+  override fun onCreate() {
+    super.onCreate()
+
+    // Initialize our common Logger which handles Sentry
+    Logger.init(BuildConfig.SENTRY_DSN, AndroidPlatform.getInstance(this))
+  }
+}

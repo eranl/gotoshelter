@@ -22,6 +22,7 @@ plugins {
   alias(libs.plugins.compose.multiplatform)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlinx.serialization)
+  alias(libs.plugins.sentry.kmp)
 }
 
 kotlin {
@@ -54,6 +55,7 @@ kotlin {
       implementation(libs.kotlinx.serialization.json)
       implementation(libs.kotlinx.datetime)
       implementation(libs.bundles.ktor.common)
+      api(libs.multiplatform.settings)
     }
     val commonTest by getting {
       dependencies {
@@ -74,7 +76,6 @@ kotlin {
       api(libs.androidx.compose.ui)
       api(libs.androidx.compose.material3)
       api(libs.androidx.compose.ui.tooling.preview)
-      // Use debugApi for tooling to ensure it's available in the app module's debug build
       api(libs.androidx.compose.ui.tooling)
     }
     iosMain.dependencies {

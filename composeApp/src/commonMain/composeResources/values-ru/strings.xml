@@ -14,11 +14,13 @@
   <string name="activity_description">Чтобы запускать Waze только во время вождения, предоставьте разрешение на физическую активность. Оно будет использоваться только при получении оповещения для вашего местоположения.</string>
   <string name="overlay_permission_title">Отображение поверх других приложений</string>
   <string name="overlay_permission_description">Это разрешение требуется для автоматического запуска навигации. Оно позволяет приложению немедленно запустить Waze при получении оповещения.</string>
+  <string name="error_reporting_title">Анонимные отчеты об ошибках</string>
+  <string name="error_reporting_description">Помогите нам улучшить приложение, делясь анонимными отчетами о сбоях. Личные или идентифицирующие устройство данные не собираются.</string>
   <string name="test_waze_button">Проверить запуск Waze</string>
   <string name="approve_button">Предоставить</string>
 
   <string name="error_install_navigation_app">Для использования этого приложения должны быть установлены Waze или Google Maps</string>
-  <string name="privacy_note">Это приложение не хранит и не передает никаких данных. Оно имеет открытый исходный код и доступно на GitHub.</string>
+  <string name="privacy_note">Это приложение не хранит и не передает никаких данных, кроме анонимных отчетов об ошибках, если вы того пожелаете. Оно имеет открытый исходный код и доступно на GitHub.</string>
 
   <string name="exit_app">Выйти из приложения</string>
   <string name="granted">Разрешено</string>

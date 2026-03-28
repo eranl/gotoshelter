@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.GoToShelter" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Transparency is handled at runtime via enableEdgeToEdge and the Compose Theme -->
-    </style>
+  <style name="Theme.GoToShelter" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Transparency is handled at runtime via enableEdgeToEdge and the Compose Theme -->
+  </style>
 </resources>

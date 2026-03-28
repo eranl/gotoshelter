@@ -48,14 +48,14 @@ actual fun GoToShelterTheme(
     SideEffect {
       val window = (view.context as Activity).window
       val insetsController = WindowCompat.getInsetsController(window, view)
-      
+
       // Ensure the bar colors are actually transparent at the window level
       window.navigationBarColor = Color.TRANSPARENT
       window.statusBarColor = Color.TRANSPARENT
-      
+
       insetsController.isAppearanceLightStatusBars = !darkTheme
       insetsController.isAppearanceLightNavigationBars = !darkTheme
-      
+
       if (Build.VERSION.SDK_INT >= 29) {
         window.isNavigationBarContrastEnforced = false
       }

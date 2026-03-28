@@ -18,7 +18,6 @@ package io.github.eranl.gotoshelter.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import com.google.android.gms.location.LocationServices
 import io.github.eranl.gotoshelter.model.GeoPoint
 import kotlinx.coroutines.tasks.await
@@ -34,13 +33,7 @@ fun LocationHelper.bindContext(context: Context) {
 
 @SuppressLint("MissingPermission")
 internal actual suspend fun getPlatformLocation(): GeoPoint? {
-  val context = appContext ?: return null
-  val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-  return try {
-    val location = fusedLocationClient.lastLocation.await() ?: return null
-    GeoPoint(location.latitude, location.longitude)
-  } catch (e: Exception) {
-    Log.e("LocationHelper", "failed to get location", e)
-    null
-  }
+  val fusedLocationClient = LocationServices.getFusedLocationProviderClient(appContext!!)
+  val location = fusedLocationClient.lastLocation.await()
+  return GeoPoint(location.latitude, location.longitude)
 }

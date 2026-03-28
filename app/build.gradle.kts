@@ -30,6 +30,13 @@ if (keystorePropertiesFile.exists()) {
   keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+val localPropertiesFile = rootProject.file("local.properties")
+val localProperties = Properties()
+if (localPropertiesFile.exists()) {
+  localProperties.load(FileInputStream(localPropertiesFile))
+}
+val sentryDsn = localProperties.getProperty("sentry.dsn") ?: ""
+
 android {
   namespace = "io.github.eranl.gotoshelter"
   compileSdk = 36
@@ -42,6 +49,8 @@ android {
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
   }
 
   signingConfigs {
@@ -56,6 +65,8 @@ android {
   }
 
   buildTypes {
+    debug {
+    }
     release {
       isMinifyEnabled = true
       signingConfig = signingConfigs.getByName("release")

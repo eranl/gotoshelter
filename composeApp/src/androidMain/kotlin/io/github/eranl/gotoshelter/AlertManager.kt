@@ -58,13 +58,12 @@ actual object AlertManager {
 
   @SuppressLint("MissingPermission")
   actual fun onEmergencyAlert(type: String, text: String) {
-    val context = getContext()
     Log.d(TAG, "Emergency alert received: $type | $text")
 
     appendAlertToFile(type, text)
 
     val hasPermission = if (Build.VERSION.SDK_INT >= 29) {
-      ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED
+      ContextCompat.checkSelfPermission(appContext!!, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED
     } else {
       true
     }
@@ -76,18 +75,18 @@ actual object AlertManager {
     }
 
     val intent =
-      Intent().setClassName(context.packageName, "io.github.eranl.gotoshelter.receiver.DrivingActivityReceiver").apply {
+      Intent().setClassName(appContext!!.packageName, "io.github.eranl.gotoshelter.receiver.DrivingActivityReceiver").apply {
         putExtra("action", "CHECK_DRIVING_AND_NAVIGATE")
       }
 
     val pendingIntent = PendingIntent.getBroadcast(
-      context,
+      appContext!!,
       1,
       intent,
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
     )
 
-    ActivityRecognition.getClient(context)
+    ActivityRecognition.getClient(appContext!!)
       .requestActivityUpdates(0, pendingIntent)
       .addOnFailureListener { e ->
         Log.e(TAG, "Failed to request activity updates, falling back to direct navigation", e)
@@ -98,52 +97,27 @@ actual object AlertManager {
   actual fun appendAlertToFile(type: String, text: String) {
     if (!BuildConfig.DEBUG) return
 
-    try {
-      val context = getContext()
-      val file = File(context.getExternalFilesDir(null), ALERTS_FILE_NAME)
-      val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-      val logEntry = "[$now] type: $type | text: $text\n"
+    val file = File(appContext!!.getExternalFilesDir(null), ALERTS_FILE_NAME)
+    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    val logEntry = "[$now] type: $type | text: $text\n"
 
-      FileOutputStream(file, true).use { it.write(logEntry.toByteArray()) }
-    } catch (e: Exception) {
-      Log.e(TAG, "Failed to append alert to file", e)
-    }
+    FileOutputStream(file, true).use { it.write(logEntry.toByteArray()) }
   }
 
   actual fun triggerNavigation() {
-    val context = getContext()
-    val packageManager = context.packageManager
+    val packageManager = appContext!!.packageManager
+
+    appendAlertToFile("navigation", "Launching waze")
 
     // Attempt to start Waze first
     if (wazeIntent.resolveActivity(packageManager) != null) {
       Log.d(TAG, "Starting Waze directly from background")
-      try {
-        context.startActivity(wazeIntent)
-      } catch (e: Exception) {
-        Log.e(TAG, "Failed to start Waze. Background activity start likely blocked.", e)
-        // If Waze fails, try Maps as a fallback
-        tryMaps(context, packageManager)
-      }
-      return
-    }
-
-    tryMaps(context, packageManager)
-  }
-
-  private fun tryMaps(context: Context, packageManager: PackageManager) {
-    if (mapsIntent.resolveActivity(packageManager) != null) {
+      appContext!!.startActivity(wazeIntent)
+    } else if (mapsIntent.resolveActivity(packageManager) != null) {
       Log.d(TAG, "Starting Maps directly from background")
-      try {
-        context.startActivity(mapsIntent)
-      } catch (e: Exception) {
-        Log.e(TAG, "Failed to start Maps.", e)
-      }
+      appContext!!.startActivity(mapsIntent)
     } else {
-      Log.e(TAG, "No navigation app resolved")
+      throw IllegalStateException("No navigation app resolved")
     }
-  }
-
-  private fun getContext(): Context = appContext ?: run {
-    throw IllegalStateException("appContext is null")
   }
 }
