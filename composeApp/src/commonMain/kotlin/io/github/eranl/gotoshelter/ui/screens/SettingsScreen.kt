@@ -17,7 +17,6 @@
 package io.github.eranl.gotoshelter.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -51,12 +50,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -84,8 +82,8 @@ import gotoshelter.composeapp.generated.resources.privacy_note
 import gotoshelter.composeapp.generated.resources.supplementary_note
 import gotoshelter.composeapp.generated.resources.test_waze_button
 import gotoshelter.composeapp.generated.resources.tzofar_alerts_description
-import gotoshelter.composeapp.generated.resources.tzofar_alerts_description_notifications
 import gotoshelter.composeapp.generated.resources.tzofar_alerts_description_location
+import gotoshelter.composeapp.generated.resources.tzofar_alerts_description_notifications
 import gotoshelter.composeapp.generated.resources.tzofar_alerts_title
 import io.github.eranl.gotoshelter.AlertManager
 import io.github.eranl.gotoshelter.AppPermission
@@ -129,8 +127,6 @@ fun SettingsContent(
   onToggleErrorReporting: (Boolean) -> Unit = {},
   platform: Platform? = null
 ) {
-  var debugClickCount by remember { mutableStateOf(0) }
-
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
@@ -153,17 +149,7 @@ fun SettingsContent(
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-          .padding(bottom = 8.dp)
-          .pointerInput(Unit) {
-            detectTapGestures(onTap = {
-              debugClickCount++
-              if (debugClickCount >= 5) {
-                debugClickCount = 0
-                throw RuntimeException("Test Crash triggered by user")
-              }
-            })
-          }
+        modifier = Modifier.padding(bottom = 8.dp)
       )
 
       Text(
@@ -254,10 +240,10 @@ fun SettingsContent(
 
         // 4. Error Reporting
         ReportingRow(
-            title = Res.string.error_reporting_title.safe("Error Reporting"),
-            description = Res.string.error_reporting_description.safe("Error Desc"),
-            isGranted = errorReportingEnabled,
-            onToggle = { Logger.setCollectionEnabled(it) }
+          title = Res.string.error_reporting_title.safe("Error Reporting"),
+          description = Res.string.error_reporting_description.safe("Error Desc"),
+          isGranted = errorReportingEnabled,
+          onToggle = { Logger.setCollectionEnabled(it) }
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -271,6 +257,19 @@ fun SettingsContent(
           Icon(Icons.Default.PlayArrow, contentDescription = null)
           Spacer(Modifier.width(8.dp))
           Text(Res.string.test_waze_button.safe("Test"))
+        }
+
+        if (status.isDebug) {
+          Spacer(modifier = Modifier.height(16.dp))
+          Button(
+            onClick = { /*throw RuntimeException("Debug Test Crash triggered by user")*/
+              Logger.logError(RuntimeException("Debug Test error triggered by user"))
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+          ) {
+            Text("Trigger Debug Crash", color = Color.White)
+          }
         }
 
         Spacer(modifier = Modifier.height(32.dp))

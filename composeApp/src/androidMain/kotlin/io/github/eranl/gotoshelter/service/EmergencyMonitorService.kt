@@ -60,14 +60,10 @@ class EmergencyMonitorService : Service() {
 
     fun start(context: Context) {
       val intent = Intent(context, EmergencyMonitorService::class.java)
-      try {
-        if (Build.VERSION.SDK_INT >= 26) {
-          context.startForegroundService(intent)
-        } else {
-          context.startService(intent)
-        }
-      } catch (e: Exception) {
-        Log.e("EmergencyMonitor", "Failed to start service", e)
+      if (Build.VERSION.SDK_INT >= 26) {
+        context.startForegroundService(intent)
+      } else {
+        context.startService(intent)
       }
     }
 

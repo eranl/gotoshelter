@@ -22,8 +22,6 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
-  alias(libs.plugins.google.services)
-  alias(libs.plugins.firebase.crashlytics)
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -31,6 +29,13 @@ val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
   keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
+
+val localPropertiesFile = rootProject.file("local.properties")
+val localProperties = Properties()
+if (localPropertiesFile.exists()) {
+  localProperties.load(FileInputStream(localPropertiesFile))
+}
+val sentryDsn = localProperties.getProperty("sentry.dsn") ?: ""
 
 android {
   namespace = "io.github.eranl.gotoshelter"
@@ -44,6 +49,8 @@ android {
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
   }
 
   signingConfigs {
@@ -59,17 +66,11 @@ android {
 
   buildTypes {
     debug {
-      firebaseCrashlytics {
-        mappingFileUploadEnabled = false
-      }
     }
     release {
       isMinifyEnabled = true
       signingConfig = signingConfigs.getByName("release")
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      firebaseCrashlytics {
-        mappingFileUploadEnabled = true
-      }
     }
   }
   compileOptions {
@@ -98,9 +99,4 @@ dependencies {
   implementation(libs.androidx.activity.compose)
   implementation(libs.material)
   debugImplementation(libs.androidx.compose.ui.tooling)
-
-  // Firebase
-  implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.crashlytics)
-  implementation(libs.firebase.analytics)
 }

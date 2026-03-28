@@ -1,14 +1,19 @@
 # GoToShelter
 
-GoToShelter is an independent, open-source Android application designed to provide real-time emergency alert monitoring and navigation to safety during life-threatening situations. 
+GoToShelter is an independent, open-source Android application designed to provide real-time emergency alert monitoring
+and navigation to safety during life-threatening situations.
 
-**IMPORTANT DISCLAIMER**: GoToShelter does NOT represent and is NOT affiliated with any government entity. It is a supplementary tool that monitors official notification channels, such as the Israel Home Front Command (https://www.oref.org.il/). Always follow official government instructions and alerts during emergencies.
+**IMPORTANT DISCLAIMER**: GoToShelter does NOT represent and is NOT affiliated with any government entity. It is a
+supplementary tool that monitors official notification channels, such as the Israel Home Front
+Command (https://www.oref.org.il/). Always follow official government instructions and alerts during emergencies.
 
 ## Features
 
-- **Emergency Alert Monitoring**: Listens for critical emergency notifications using a dedicated `NotificationListenerService`.
+- **Emergency Alert Monitoring**: Listens for critical emergency notifications using a dedicated
+  `NotificationListenerService`.
 - **Real-time Monitoring**: Runs a foreground service to ensure continuous monitoring during emergency events.
-- **Navigation Integration**: Seamlessly integrates with popular navigation apps like **Waze** and **Google Maps** to guide users to safety.
+- **Navigation Integration**: Seamlessly integrates with popular navigation apps like **Waze** and **Google Maps** to
+  guide users to safety.
 - **Driving Detection**: Automatically detects when the user is driving to provide navigation assistance.
 - **Overlay Alerts**: Uses system-level overlays to ensure navigation starts even when other apps are in use.
 
@@ -28,7 +33,8 @@ To provide its life-saving features, the app requires several permissions:
 
 - `NOTIFICATION_LISTENER`: To monitor incoming emergency alerts.
 - `SYSTEM_ALERT_WINDOW`: To launch navigation from the background.
-- `ACCESS_COARSE_LOCATION` & `ACCESS_BACKGROUND_LOCATION`: To determine whether an incoming alert applies to the user's current position.
+- `ACCESS_COARSE_LOCATION` & `ACCESS_BACKGROUND_LOCATION`: To determine whether an incoming alert applies to the user's
+  current position.
 - `ACTIVITY_RECOGNITION`: To detect driving.
 - `FOREGROUND_SERVICE`: To ensure the app remains active during emergencies.
 

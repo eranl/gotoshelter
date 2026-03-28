@@ -54,16 +54,29 @@ class TzofarMonitor(
 
   private var monitoringJob: Job? = null
 
+  companion object {
+    private const val MAX_FAILURES = 50
+    private const val RETRY_DELAY_MS = 30000L
+  }
+
   fun start() {
     if (monitoringJob?.isActive == true) return
 
     monitoringJob = scope.launch {
+      var failureCount = 0
       while (isActive) {
         try {
           connectAndListen()
+          // Reset failure count on successful connection closure
+          failureCount = 0
         } catch (e: Exception) {
-          println("TzofarMonitor: Connection error: ${e.message}. Retrying in 5s...")
-          delay(5000)
+          failureCount++
+          if (failureCount > MAX_FAILURES) {
+            println("TzofarMonitor: Max failures ($MAX_FAILURES) reached. Crashing.")
+            throw e
+          }
+          println("TzofarMonitor: Connection error ($failureCount/$MAX_FAILURES): ${e.message}. Retrying in ${RETRY_DELAY_MS / 1000}s...")
+          delay(RETRY_DELAY_MS)
         }
       }
     }
@@ -77,7 +90,6 @@ class TzofarMonitor(
       path = "/socket?platform=ANDROID",
       request = {
         header(HttpHeaders.UserAgent, "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36")
-        // Ktor uses 'Referrer' (correct spelling) instead of 'Referer'
         header(HttpHeaders.Referrer, "https://www.tzevaadom.co.il")
         header(HttpHeaders.Origin, "https://www.tzevaadom.co.il")
         header("tzofar", generateTzofarToken())

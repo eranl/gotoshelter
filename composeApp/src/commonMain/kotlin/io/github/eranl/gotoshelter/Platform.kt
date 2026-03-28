@@ -32,8 +32,10 @@ enum class AppPermission {
 data class AppStatus(
   val permissions: Map<AppPermission, Boolean>,
   val runtimePermissions: Set<AppPermission>,
+  val specialPermissions: Set<AppPermission> = emptySet(),
   val isHfcInstalled: Boolean,
-  val isNavigationAppInstalled: Boolean
+  val isNavigationAppInstalled: Boolean,
+  val isDebug: Boolean = false
 ) {
   /**
    * Returns true if the permission is granted, or if it's not a runtime permission

@@ -40,6 +40,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import io.github.eranl.gotoshelter.service.EmergencyMonitorService
+import io.github.eranl.gotoshelter.shared.BuildConfig
 import io.github.eranl.gotoshelter.util.HFC_PACKAGE_NAME
 import io.github.eranl.gotoshelter.util.LocationHelper
 import io.github.eranl.gotoshelter.util.bindContext
@@ -112,16 +113,18 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
   }
 
   private fun getAppStatusInternal(): AppStatus {
-    val runtimePermissions = AppPermission.values().filter { isRuntimePermission(it) }.toSet()
-    val permissionsMap = AppPermission.values().associateWith {
+    val runtimePermissions = AppPermission.entries.filter { isRuntimePermission(it) }.toSet()
+    val permissionsMap = AppPermission.entries.associateWith {
       if (it in runtimePermissions) checkPermission(it) else true
     }
 
     return AppStatus(
       permissions = permissionsMap,
       runtimePermissions = runtimePermissions,
+      specialPermissions = setOf(AppPermission.OVERLAY, AppPermission.BATTERY_OPTIMIZATIONS, AppPermission.NOTIFICATION_ACCESS),
       isHfcInstalled = isHfcAppInstalled(),
-      isNavigationAppInstalled = isNavigationAppInstalled()
+      isNavigationAppInstalled = isNavigationAppInstalled(),
+      isDebug = BuildConfig.DEBUG
     )
   }
 
@@ -150,9 +153,15 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
     if (toProcess.isEmpty()) return
 
     // Special permissions first
-    if (AppPermission.NOTIFICATION_ACCESS in toProcess) { openNotificationAccessSettings(); return }
-    if (AppPermission.OVERLAY in toProcess) { openOverlaySettings(); return }
-    if (AppPermission.BATTERY_OPTIMIZATIONS in toProcess) { requestIgnoreBatteryOptimizations(); return }
+    if (AppPermission.NOTIFICATION_ACCESS in toProcess) {
+      openNotificationAccessSettings(); return
+    }
+    if (AppPermission.OVERLAY in toProcess) {
+      openOverlaySettings(); return
+    }
+    if (AppPermission.BATTERY_OPTIMIZATIONS in toProcess) {
+      requestIgnoreBatteryOptimizations(); return
+    }
 
     // Runtime permissions require a launcher and optionally an activity for rationale
     val launcher = activeLauncher ?: return
@@ -202,7 +211,7 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
     DisposableEffect(launcher, context) {
       activeLauncher = launcher
       activeActivity = findActivity(context)
-      onDispose { 
+      onDispose {
         activeLauncher = null
         activeActivity = null
       }

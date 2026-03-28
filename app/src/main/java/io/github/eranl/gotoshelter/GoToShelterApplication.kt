@@ -16,23 +16,14 @@
 
 package io.github.eranl.gotoshelter
 
-import android.graphics.Color
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import android.app.Application
+import io.github.eranl.gotoshelter.monitoring.Logger
 
-class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+class GoToShelterApplication : Application() {
+  override fun onCreate() {
+    super.onCreate()
 
-    enableEdgeToEdge(
-      navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)
-    )
-
-    setContent {
-      App(onExit = { finish() })
-    }
+    // Initialize our common Logger which handles Sentry
+    Logger.init(BuildConfig.SENTRY_DSN, AndroidPlatform.getInstance(this))
   }
 }
