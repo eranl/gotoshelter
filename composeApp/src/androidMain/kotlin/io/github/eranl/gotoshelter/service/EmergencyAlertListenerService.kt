@@ -61,11 +61,6 @@ class EmergencyAlertListenerService : NotificationListenerService() {
 
     val extras = sbn.notification.extras
     val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
-    val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
-
-    AlertManager.onNotificationPosted(
-      title = title,
-      text = text
-    )
+    AlertManager.onNotificationPosted(title)
   }
 }

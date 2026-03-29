@@ -25,5 +25,6 @@ class GoToShelterApplication : Application() {
 
     // Initialize our common Logger which handles Sentry
     Logger.init(BuildConfig.SENTRY_DSN, AndroidPlatform.getInstance(this))
+    Logger.debugLog("app created")
   }
 }

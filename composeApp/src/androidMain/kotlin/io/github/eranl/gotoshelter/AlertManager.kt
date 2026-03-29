@@ -27,6 +27,7 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.google.android.gms.location.ActivityRecognition
+import io.github.eranl.gotoshelter.monitoring.Logger
 import io.github.eranl.gotoshelter.shared.BuildConfig
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -57,10 +58,8 @@ actual object AlertManager {
   }
 
   @SuppressLint("MissingPermission")
-  actual fun onEmergencyAlert(type: String, text: String) {
-    Log.d(TAG, "Emergency alert received: $type | $text")
-
-    appendAlertToFile(type, text)
+  actual fun onEmergencyAlert(type: String) {
+    Logger.debugLog("${type} alert")
 
     val hasPermission = if (Build.VERSION.SDK_INT >= 29) {
       ContextCompat.checkSelfPermission(appContext!!, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED
@@ -89,25 +88,15 @@ actual object AlertManager {
     ActivityRecognition.getClient(appContext!!)
       .requestActivityUpdates(0, pendingIntent)
       .addOnFailureListener { e ->
-        Log.e(TAG, "Failed to request activity updates, falling back to direct navigation", e)
+        Logger.debugLog("Failed to request activity updates, falling back to direct navigation: $e")
         triggerNavigation()
       }
-  }
-
-  actual fun appendAlertToFile(type: String, text: String) {
-    if (!BuildConfig.DEBUG) return
-
-    val file = File(appContext!!.getExternalFilesDir(null), ALERTS_FILE_NAME)
-    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    val logEntry = "[$now] type: $type | text: $text\n"
-
-    FileOutputStream(file, true).use { it.write(logEntry.toByteArray()) }
   }
 
   actual fun triggerNavigation() {
     val packageManager = appContext!!.packageManager
 
-    appendAlertToFile("navigation", "Launching waze")
+    Logger.debugLog("Launching waze")
 
     // Attempt to start Waze first
     if (wazeIntent.resolveActivity(packageManager) != null) {

@@ -24,14 +24,12 @@ expect object AlertManager {
   /**
    * Entry point for any emergency alert.
    */
-  fun onEmergencyAlert(type: String, text: String)
+  fun onEmergencyAlert(type: String)
 
   /**
    * Triggers navigation to the nearest shelter.
    */
   fun triggerNavigation()
-
-  fun appendAlertToFile(type: String, text: String)
 }
 
 /**
@@ -43,11 +41,8 @@ private val notificationTitles =
 /**
  * Common logic to filter and process notifications from emergency alert apps.
  */
-fun AlertManager.onNotificationPosted(title: String, text: String) {
-  if (!notificationTitles.contains(title)) return
-
-  onEmergencyAlert(
-    type = "notification",
-    text = "$title $text"
-  )
+fun AlertManager.onNotificationPosted(title: String) {
+  if (notificationTitles.contains(title)) {
+    onEmergencyAlert("notification")
+  }
 }

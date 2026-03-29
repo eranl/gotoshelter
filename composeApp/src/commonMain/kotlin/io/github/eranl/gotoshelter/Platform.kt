@@ -35,7 +35,7 @@ data class AppStatus(
   val specialPermissions: Set<AppPermission> = emptySet(),
   val isHfcInstalled: Boolean,
   val isNavigationAppInstalled: Boolean,
-  val isDebug: Boolean = false
+  val debugBuild: Boolean = false
 ) {
   /**
    * Returns true if the permission is granted, or if it's not a runtime permission
@@ -74,6 +74,7 @@ interface Platform {
   fun BindPermissionHandler()
 
   fun startServicesIfPermissionsGranted()
+  fun getExternalFilesDir(): okio.Path
 }
 
 @Composable

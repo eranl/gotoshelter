@@ -48,6 +48,7 @@ import io.github.eranl.gotoshelter.util.isNotificationServiceEnabled
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import okio.Path.Companion.toOkioPath
 
 class AndroidPlatform private constructor(private val appContext: Context) : Platform {
   override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -124,7 +125,7 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
       specialPermissions = setOf(AppPermission.OVERLAY, AppPermission.BATTERY_OPTIMIZATIONS, AppPermission.NOTIFICATION_ACCESS),
       isHfcInstalled = isHfcAppInstalled(),
       isNavigationAppInstalled = isNavigationAppInstalled(),
-      isDebug = BuildConfig.DEBUG
+      debugBuild = BuildConfig.DEBUG
     )
   }
 
@@ -259,6 +260,8 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
       // Once the user grants permission, the system binds it automatically.
     }
   }
+
+  override fun getExternalFilesDir() = appContext.getExternalFilesDir(null)!!.toOkioPath()
 
   private fun isIgnoringBatteryOptimizations(): Boolean {
     val powerManager = appContext.getSystemService(Context.POWER_SERVICE) as PowerManager

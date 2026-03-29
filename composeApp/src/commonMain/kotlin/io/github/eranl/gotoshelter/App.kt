@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import gotoshelter.composeapp.generated.resources.Res
 import gotoshelter.composeapp.generated.resources.error_install_navigation_app
 import gotoshelter.composeapp.generated.resources.exit_app
+import io.github.eranl.gotoshelter.monitoring.Logger
 import io.github.eranl.gotoshelter.ui.components.AppTopBar
 import io.github.eranl.gotoshelter.ui.screens.SettingsScreen
 import io.github.eranl.gotoshelter.ui.theme.GoToShelterTheme
@@ -52,6 +53,7 @@ import org.jetbrains.compose.resources.stringResource
 fun App(onExit: () -> Unit) {
   val platform = getPlatform()
   val status by platform.status.collectAsState()
+  Logger.debugLog("UI started")
 
   // Periodically refresh status to catch permission changes or app installations
   // when returning from settings or Play Store.

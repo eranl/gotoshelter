@@ -259,7 +259,7 @@ fun SettingsContent(
           Text(Res.string.test_waze_button.safe("Test"))
         }
 
-        if (status.isDebug) {
+        if (status.debugBuild) {
           Spacer(modifier = Modifier.height(16.dp))
           Button(
             onClick = { /*throw RuntimeException("Debug Test Crash triggered by user")*/

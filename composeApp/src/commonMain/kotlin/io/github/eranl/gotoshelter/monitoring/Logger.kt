@@ -19,22 +19,36 @@ package io.github.eranl.gotoshelter.monitoring
 import io.github.eranl.gotoshelter.Platform
 import io.sentry.kotlin.multiplatform.Sentry
 import io.sentry.kotlin.multiplatform.protocol.User
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import okio.BufferedSink
+import okio.FileSystem
+import okio.SYSTEM
+import okio.buffer
 
 /**
  * A multiplatform logger that handles Sentry initialization and reporting.
  */
 object Logger {
   private val reporters = mutableListOf<ErrorReporter>()
+  private var debuggingLog: BufferedSink? = null
 
   /**
    * Initializes Sentry with strict privacy settings.
-   * @param dsn The Sentry DSN.
+   * @param sentryDsn The Sentry DSN.
    */
-  fun init(dsn: String, platform: Platform) {
+  fun init(sentryDsn: String, platform: Platform) {
+    val debugBuild = platform.status.value.debugBuild
+    if (debugBuild) {
+      val file = platform.getExternalFilesDir().resolve("log.txt")
+      debuggingLog = FileSystem.SYSTEM.appendingSink(file).buffer()
+    }
+
     Sentry.init { options ->
-      options.dsn = dsn
-      options.debug = platform.status.value.isDebug
-      options.environment = if (platform.status.value.isDebug) "debug" else "release"
+      options.dsn = sentryDsn
+      options.debug = debugBuild
+      options.environment = if (debugBuild) "debug" else "release"
 
       // Hardened privacy configuration
       options.enableAutoSessionTracking = false
@@ -92,6 +106,12 @@ object Logger {
     reporters.forEach { it.report(throwable, message) }
   }
 
+  fun debugLog(message: String) {
+    debuggingLog?.let {
+      val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+      it.writeUtf8("[$now]: $message\n").flush()
+    }
+  }
 }
 
 interface ErrorReporter {

@@ -55,6 +55,7 @@ kotlin {
       implementation(libs.kotlinx.serialization.json)
       implementation(libs.kotlinx.datetime)
       implementation(libs.bundles.ktor.common)
+      implementation(libs.okio)
       api(libs.multiplatform.settings)
     }
     val commonTest by getting {

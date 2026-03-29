@@ -114,17 +114,9 @@ class TzofarMonitor(
     val cityIds = data["citiesIds"]!!.jsonArray.map { it.jsonPrimitive.int }
 
     if (LocationHelper.isLocationInArea(cityIds)) {
-      val title = data["title${
-        when (Locale.current.language) {
-          "iw", "he" -> "He"
-          "ar" -> "Ar"
-          "ru" -> "Ru"
-          else -> "En"
-        }
-      }"]!!.jsonPrimitive.content
-      AlertManager.onEmergencyAlert("צופר", title)
+      AlertManager.onEmergencyAlert("צופר")
     } else {
-      AlertManager.appendAlertToFile("raw Tzofar", "$cityIds")
+      Logger.debugLog("Tzofar city ids: $cityIds")
     }
   }
 
