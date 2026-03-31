@@ -98,5 +98,6 @@ dependencies {
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.material)
+  implementation(libs.play.app.update)
   debugImplementation(libs.androidx.compose.ui.tooling)
 }

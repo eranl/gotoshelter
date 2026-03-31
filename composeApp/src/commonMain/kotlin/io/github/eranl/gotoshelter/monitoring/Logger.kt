@@ -76,10 +76,10 @@ object Logger {
 
           // 4. Scrub Contexts (Device info)
           // This requires an implementation for https://github.com/getsentry/sentry-kotlin-multiplatform/issues/537 to
-          // have an effect, hence the use of a snapshot version
+          // have an effect, hence the use of a sentry snapshot version
           (event.contexts as MutableMap).remove("device")
 
-          for (permission in platform.status.value.specialPermissions) {
+          platform.status.value.specialPermissions.forEach { permission ->
             event.setTag(permission.toString(), platform.status.value.permissions[permission].toString())
           }
 

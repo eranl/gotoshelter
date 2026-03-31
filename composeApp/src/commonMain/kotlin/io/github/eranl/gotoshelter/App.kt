@@ -65,6 +65,13 @@ fun App(onExit: () -> Unit) {
     }
   }
 
+  // Only check for updates when not in critical state
+  LaunchedEffect(platform, status.isCriticalState) {
+    if (!status.isCriticalState) {
+      platform.checkForUpdates()
+    }
+  }
+
   // Start services if permissions are granted.
   LaunchedEffect(status.canStartMonitorService, status.canStartListenerService) {
     platform.startServicesIfPermissionsGranted()

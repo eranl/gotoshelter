@@ -24,11 +24,17 @@
 
   <string name="exit_app">إغلاق التطبيق</string>
   <string name="granted">تم المنح</string>
-  <string name="supplementary_note">تطبيق "إلى الملجأ" هو أداة مستقلة ولا يمثل أو يتبع أي جهة حكومية. يوفر هذا التطبيق تنبيهات تكميلية من خلال مراقبة التنبيهات من تطبيق قيادة الجبهة الداخلية الرسمي وصوفار. اتبع دائماً التعليمات الرسمية من السلطات الحكومية أثناء حالات الطوارئ.</string>
+  <string name="supplementary_note">تطبيق "إلى الملجأ" هو أداة مستقلة ولا يمثل أو يتبع أي جهة حكومية. يوفر هذا التطبيق ملاحة تلقائية إلى الملاجئ من خلال مراقبة الإشعارات من تطبيق قيادة الجبهة الداخلية الرسمي وصوفار. اتبع دائماً التعليمات الرسمية من السلطات الحكومية أثناء حالات الطوارئ.</string>
 
   <string name="battery_optimization_title">تحسين البطارية</string>
   <string name="battery_optimization_description">مطلوب تعطيل تحسين البطارية لضمان تلقي التطبيق للتنبيهات بشكل موثوق في الخلفية</string>
 
-  <string name="no_services_enabled_description">يجب تمكين خدمة تنبيه واحدة على الأقل (قيادة الجبهة الداخلية أو صوفار) لاستخدام هذا التطبيق</string>
+  <string name="no_services_enabled_description">يجب تمكين خدمة تنبيه واحدة على الأقل (قيادة الجبهة الداخلية أو صوفار)</string>
   <string name="app_not_active_title">التطبيق غير نشط</string>
+
+  <string name="update_available_title">تحديث متوفر</string>
+  <string name="update_available_message">يتوفر إصدار جديد من "إلى الملجأ". هل تريد التحديث الآن؟</string>
+  <string name="update_button">تحديث</string>
+  <string name="update_downloaded_message">تم تنزيل التحديث وهو جاهز للتثبيت.</string>
+  <string name="restart_button">إعادة التشغيل</string>
 </resources>

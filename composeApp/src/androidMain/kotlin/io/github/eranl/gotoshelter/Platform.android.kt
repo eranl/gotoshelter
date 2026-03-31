@@ -30,6 +30,7 @@ import android.provider.Settings.canDrawOverlays
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -39,6 +40,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.net.toUri
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import io.github.eranl.gotoshelter.service.EmergencyMonitorService
 import io.github.eranl.gotoshelter.shared.BuildConfig
 import io.github.eranl.gotoshelter.util.HFC_PACKAGE_NAME
@@ -57,14 +66,31 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
   private val _status = MutableStateFlow(getAppStatusInternal())
   override val status: StateFlow<AppStatus> = _status.asStateFlow()
 
-  // Bound when BindPermissionHandler is active in the UI
+  private val _updateStatus = MutableStateFlow(UpdateStatus.NONE)
+  override val updateStatus: StateFlow<UpdateStatus> = _updateStatus.asStateFlow()
+
+  private val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(appContext)
+  private var cachedAppUpdateInfo: AppUpdateInfo? = null
+
+  // Bound when BindHandlers is active in the UI
   private var activeLauncher: ActivityResultLauncher<Array<String>>? = null
+  private var updateLauncher: ActivityResultLauncher<IntentSenderRequest>? = null
   private var activeActivity: Activity? = null
+
+  private val installStateListener = InstallStateUpdatedListener { state ->
+    when (state.installStatus()) {
+      InstallStatus.DOWNLOADING -> _updateStatus.value = UpdateStatus.DOWNLOADING
+      InstallStatus.DOWNLOADED -> _updateStatus.value = UpdateStatus.DOWNLOADED
+      InstallStatus.FAILED -> _updateStatus.value = UpdateStatus.FAILED
+      else -> {}
+    }
+  }
 
   init {
     // Ensure singletons are bound to the application context as soon as the platform is used.
     AlertManager.bindContext(appContext)
     LocationHelper.bindContext(appContext)
+    appUpdateManager.registerListener(installStateListener)
   }
 
   private fun isHfcAppInstalled(): Boolean = try {
@@ -203,17 +229,27 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
   }
 
   @Composable
-  override fun BindPermissionHandler() {
+  override fun BindHandlers() {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
       ActivityResultContracts.RequestMultiplePermissions()
     ) { refreshStatus() }
 
-    DisposableEffect(launcher, context) {
+    val updateFlowLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode != Activity.RESULT_OK) {
+            Log.e(TAG, "Update flow failed! Result code: ${result.resultCode}")
+        }
+    }
+
+    DisposableEffect(launcher, updateFlowLauncher, context) {
       activeLauncher = launcher
+      updateLauncher = updateFlowLauncher
       activeActivity = findActivity(context)
       onDispose {
         activeLauncher = null
+        updateLauncher = null
         activeActivity = null
       }
     }
@@ -230,6 +266,35 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
 
   override fun refreshStatus() {
     _status.value = getAppStatusInternal()
+  }
+
+  override fun checkForUpdates() {
+    appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+      cachedAppUpdateInfo = info
+      when {
+        info.installStatus() == InstallStatus.DOWNLOADED -> {
+          _updateStatus.value = UpdateStatus.DOWNLOADED
+        }
+        info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> {
+          _updateStatus.value = UpdateStatus.AVAILABLE
+        }
+      }
+    }
+  }
+
+  override fun requestUpdate() {
+    val info = cachedAppUpdateInfo ?: return
+    val launcher = updateLauncher ?: return
+    appUpdateManager.startUpdateFlowForResult(
+      info,
+      launcher,
+      AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
+    )
+  }
+
+  override fun completeUpdate() {
+    appUpdateManager.completeUpdate()
   }
 
   private fun getAndroidPermissionStrings(permission: AppPermission): List<String> = when (permission) {

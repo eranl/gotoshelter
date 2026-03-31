@@ -29,6 +29,14 @@ enum class AppPermission {
   BATTERY_OPTIMIZATIONS
 }
 
+enum class UpdateStatus {
+  NONE,
+  AVAILABLE,
+  DOWNLOADING,
+  DOWNLOADED,
+  FAILED
+}
+
 data class AppStatus(
   val permissions: Map<AppPermission, Boolean>,
   val runtimePermissions: Set<AppPermission>,
@@ -66,15 +74,24 @@ data class AppStatus(
 interface Platform {
   val name: String
   val status: StateFlow<AppStatus>
+  val updateStatus: StateFlow<UpdateStatus>
 
   fun requestPermissions(permissions: List<AppPermission>)
   fun refreshStatus()
 
+  /**
+   * Binds platform-specific handlers (like activity result launchers) to the Composable lifecycle.
+   * This should be called once from a top-level screen that requires permission or update flows.
+   */
   @Composable
-  fun BindPermissionHandler()
+  fun BindHandlers()
 
   fun startServicesIfPermissionsGranted()
   fun getExternalFilesDir(): okio.Path
+
+  fun checkForUpdates()
+  fun requestUpdate()
+  fun completeUpdate()
 }
 
 @Composable

@@ -74,6 +74,7 @@ kotlin {
       implementation(libs.android.maps.utils)
       implementation(libs.okhttp)
       implementation(libs.ktor.client.okhttp)
+      implementation(libs.play.app.update)
       api(libs.androidx.compose.ui)
       api(libs.androidx.compose.material3)
       api(libs.androidx.compose.ui.tooling.preview)

@@ -4,14 +4,14 @@
   <string name="intro_title">Automate Navigation to Shelters</string>
   <string name="intro_description">GoToShelter monitors emergency early warnings in real time. When a warning is detected, it automatically launches Waze or Google Maps to navigate you to the nearest shelter.</string>
   <string name="tzofar_alerts_title">Tzofar Alerts</string>
-  <string name="tzofar_alerts_description">To receive alerts from Tzofar, grant location and notifications permissions. Location will only be used when an alert is received to check if it applies to your location.</string>
+  <string name="tzofar_alerts_description">To receive alerts from Tzofar, grant location and notifications permissions. Location will only be used when an alert is received to check if it applies to your area.</string>
   <string name="tzofar_alerts_description_notifications">To receive alerts from Tzofar, grant notifications permission.</string>
-  <string name="tzofar_alerts_description_location">To receive alerts from Tzofar, grant location permission. Location will only be used when an alert is received to check if it applies to your location.</string>
-  <string name="background_location_description">To receive alerts from Tzofar reliably, choose "Allow all the time" in settings. Location will only be used when an alert is received to check if it applies to your location.</string>
+  <string name="tzofar_alerts_description_location">To receive alerts from Tzofar, grant location permission. Location will only be used when an alert is received to check if it applies to your area.</string>
+  <string name="background_location_description">To receive alerts from Tzofar reliably, choose "Allow all the time" in settings. Location will only be used when an alert is received to check if it applies to your area.</string>
   <string name="hfc_alerts_title">Home Front Command Alerts</string>
   <string name="hfc_alerts_description">To receive alerts from Home Front Command, grant notification access.</string>
   <string name="activity_permission">Driving Detection</string>
-  <string name="activity_description">To start Waze only when driving, grant physical activity permission. It will only be used when an alert is received for your location.</string>
+  <string name="activity_description">To start Waze only when driving, grant physical activity permission. It will only be used when an alert is received for your area.</string>
   <string name="overlay_permission_title">Display Over Other Apps</string>
   <string name="overlay_permission_description">This permission is required for automatic navigation launch. It allows the app to start Waze immediately when an alert is received.</string>
   <string name="error_reporting_title">Anonymous Error Reporting</string>
@@ -24,11 +24,17 @@
 
   <string name="exit_app">Exit App</string>
   <string name="granted">Granted</string>
-  <string name="supplementary_note">GoToShelter is an independent tool and does NOT represent or have any affiliation with any government entity. This app provides supplementary alerts by monitoring notifications from the official Home Front Command application and Tzofar. Always follow official instructions from government authorities during emergencies.</string>
+  <string name="supplementary_note">GoToShelter is an independent tool and does NOT represent or have any affiliation with any government entity. This app provides automated navigation to shelters by monitoring notifications from the official Home Front Command application and Tzofar. Always follow official instructions from government authorities during emergencies.</string>
 
   <string name="battery_optimization_title">Battery Optimization</string>
   <string name="battery_optimization_description">Disabling battery optimization is required in order to ensure that the app receives alerts reliably in the background</string>
 
-  <string name="no_services_enabled_description">At least one alert service (Home Front Command or Tzofar) has to be enabled in order to use this app</string>
+  <string name="no_services_enabled_description">At least one alert service (Home Front Command or Tzofar) has to be enabled</string>
   <string name="app_not_active_title">App is Not Active</string>
+
+  <string name="update_available_title">Update Available</string>
+  <string name="update_available_message">A new version of GoToShelter is available. Would you like to update now?</string>
+  <string name="update_button">Update</string>
+  <string name="update_downloaded_message">The update has been downloaded and is ready to be installed.</string>
+  <string name="restart_button">Restart</string>
 </resources>

@@ -37,6 +37,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -79,16 +80,22 @@ import gotoshelter.composeapp.generated.resources.no_services_enabled_descriptio
 import gotoshelter.composeapp.generated.resources.overlay_permission_description
 import gotoshelter.composeapp.generated.resources.overlay_permission_title
 import gotoshelter.composeapp.generated.resources.privacy_note
+import gotoshelter.composeapp.generated.resources.restart_button
 import gotoshelter.composeapp.generated.resources.supplementary_note
 import gotoshelter.composeapp.generated.resources.test_waze_button
 import gotoshelter.composeapp.generated.resources.tzofar_alerts_description
 import gotoshelter.composeapp.generated.resources.tzofar_alerts_description_location
 import gotoshelter.composeapp.generated.resources.tzofar_alerts_description_notifications
 import gotoshelter.composeapp.generated.resources.tzofar_alerts_title
+import gotoshelter.composeapp.generated.resources.update_available_message
+import gotoshelter.composeapp.generated.resources.update_available_title
+import gotoshelter.composeapp.generated.resources.update_button
+import gotoshelter.composeapp.generated.resources.update_downloaded_message
 import io.github.eranl.gotoshelter.AlertManager
 import io.github.eranl.gotoshelter.AppPermission
 import io.github.eranl.gotoshelter.AppStatus
 import io.github.eranl.gotoshelter.Platform
+import io.github.eranl.gotoshelter.UpdateStatus
 import io.github.eranl.gotoshelter.getPlatform
 import io.github.eranl.gotoshelter.monitoring.Logger
 import io.github.eranl.gotoshelter.monitoring.SettingsProvider
@@ -100,16 +107,18 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SettingsScreen(platform: Platform = getPlatform()) {
   val status by platform.status.collectAsState()
+  val updateStatus by platform.updateStatus.collectAsState()
   val errorReportingEnabled by if (LocalInspectionMode.current) {
     remember { mutableStateOf(false) }
   } else {
     SettingsProvider.errorReportingEnabled.collectAsState()
   }
 
-  platform.BindPermissionHandler()
+  platform.BindHandlers()
 
   SettingsContent(
     status = status,
+    updateStatus = updateStatus,
     errorReportingEnabled = errorReportingEnabled,
     onToggleErrorReporting = { Logger.setCollectionEnabled(it) },
     platform = platform
@@ -123,6 +132,7 @@ private fun StringResource.safe(fallback: String): String =
 @Composable
 fun SettingsContent(
   status: AppStatus,
+  updateStatus: UpdateStatus = UpdateStatus.NONE,
   errorReportingEnabled: Boolean = false,
   onToggleErrorReporting: (Boolean) -> Unit = {},
   platform: Platform? = null
@@ -159,6 +169,11 @@ fun SettingsContent(
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(horizontal = 16.dp)
       )
+
+      if (!status.isCriticalState && updateStatus != UpdateStatus.NONE && updateStatus != UpdateStatus.DOWNLOADING) {
+        Spacer(modifier = Modifier.height(24.dp))
+        UpdateSection(updateStatus, platform)
+      }
 
       if (status.isCriticalState) {
         Spacer(modifier = Modifier.height(24.dp))
@@ -295,6 +310,56 @@ fun SettingsContent(
         Spacer(modifier = Modifier.height(16.dp))
         Spacer(modifier = Modifier.navigationBarsPadding())
       }
+    }
+  }
+}
+
+@Composable
+fun UpdateSection(updateStatus: UpdateStatus, platform: Platform?) {
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .clip(RoundedCornerShape(8.dp))
+      .background(MaterialTheme.colorScheme.secondaryContainer)
+      .padding(16.dp)
+  ) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      Icon(Icons.Default.Refresh, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+      Spacer(Modifier.width(8.dp))
+      Text(
+        text = if (updateStatus == UpdateStatus.DOWNLOADED)
+          Res.string.update_available_title.safe("Update Ready")
+        else
+          Res.string.update_available_title.safe("Update Available"),
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold
+      )
+    }
+    Spacer(Modifier.height(8.dp))
+    Text(
+      text = if (updateStatus == UpdateStatus.DOWNLOADED)
+        Res.string.update_downloaded_message.safe("Update downloaded")
+      else
+        Res.string.update_available_message.safe("New version available"),
+      style = MaterialTheme.typography.bodyMedium
+    )
+    Spacer(Modifier.height(12.dp))
+    Button(
+      onClick = {
+        if (updateStatus == UpdateStatus.DOWNLOADED) {
+          platform?.completeUpdate()
+        } else {
+          platform?.requestUpdate()
+        }
+      },
+      modifier = Modifier.align(Alignment.End)
+    ) {
+      Text(
+        if (updateStatus == UpdateStatus.DOWNLOADED)
+          Res.string.restart_button.safe("Restart")
+        else
+          Res.string.update_button.safe("Update")
+      )
     }
   }
 }

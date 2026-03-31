@@ -24,11 +24,17 @@
 
   <string name="exit_app">יציאה</string>
   <string name="granted">מאושר</string>
-  <string name="supplementary_note">"סעו למקלט" הינה כלי עצמאי ואינה מייצגת או קשורה לישות ממשלתית כלשהי. אפליקציה זו מספקת התראות משלימות על ידי ניטור התראות מאפליקציית פיקוד העורף הרשמית וצופר. יש להישמע תמיד להנחיות הרשמיות של רשויות המדינה בעת חירום.</string>
+  <string name="supplementary_note">"סעו למקלט" הינה כלי עצמאי ואינה מייצגת או קשורה לישות ממשלתית כלשהי. אפליקציה זו מספקת ניווט אוטומטי למקלטים על ידי ניטור התראות מאפליקציית פיקוד העורף הרשמית וצופר. יש להישמע תמיד להנחיות הרשמיות של רשויות המדינה בעת חירום.</string>
 
   <string name="battery_optimization_title">אופטימיזציית סוללה</string>
   <string name="battery_optimization_description">יש לבטל את אופטימיזציית הסוללה כדי להבטיח שהאפליקציה תקבל התראות באופן אמין ברקע</string>
 
-  <string name="no_services_enabled_description">יש להפעיל לפחות שירות התראות אחד (פיקוד העורף או צופר) כדי להשתמש באפליקציה</string>
+  <string name="no_services_enabled_description">יש להפעיל לפחות שירות התראות אחד (פיקוד העורף או צופר)</string>
   <string name="app_not_active_title">האפליקציה אינה פעילה</string>
+
+  <string name="update_available_title">עדכון זמין</string>
+  <string name="update_available_message">גרסה חדשה של "סעו למקלט" זמינה. האם ברצונך לעדכן כעת?</string>
+  <string name="update_button">עדכן</string>
+  <string name="update_downloaded_message">העדכון הורד ומוכן להתקנה.</string>
+  <string name="restart_button">הפעלה מחדש</string>
 </resources>

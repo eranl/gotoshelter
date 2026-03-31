@@ -6,3 +6,4 @@ build/
 /keystore.properties
 /.kotlin/
 google-services.json
+/.aiexclude
