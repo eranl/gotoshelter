@@ -20,3 +20,8 @@ package io.github.eranl.gotoshelter.util
  * Package name for the official Home Front Command (Pikud HaOref) application.
  */
 const val HFC_PACKAGE_NAME = "com.alert.meserhadash"
+
+/**
+ * Action string for checking driving status and triggering navigation.
+ */
+const val ACTION_CHECK_DRIVING_AND_NAVIGATE = "CHECK_DRIVING_AND_NAVIGATE"

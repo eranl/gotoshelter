@@ -29,6 +29,7 @@ import androidx.core.net.toUri
 import com.google.android.gms.location.ActivityRecognition
 import io.github.eranl.gotoshelter.monitoring.Logger
 import io.github.eranl.gotoshelter.shared.BuildConfig
+import io.github.eranl.gotoshelter.util.ACTION_CHECK_DRIVING_AND_NAVIGATE
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -74,9 +75,7 @@ actual object AlertManager {
     }
 
     val intent =
-      Intent().setClassName(appContext!!.packageName, "io.github.eranl.gotoshelter.receiver.DrivingActivityReceiver").apply {
-        putExtra("action", "CHECK_DRIVING_AND_NAVIGATE")
-      }
+      Intent(ACTION_CHECK_DRIVING_AND_NAVIGATE).setClassName(appContext!!.packageName, "io.github.eranl.gotoshelter.receiver.DrivingActivityReceiver")
 
     val pendingIntent = PendingIntent.getBroadcast(
       appContext!!,

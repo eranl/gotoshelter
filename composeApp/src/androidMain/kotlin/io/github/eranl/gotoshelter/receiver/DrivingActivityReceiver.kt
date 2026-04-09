@@ -24,6 +24,8 @@ import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.ActivityRecognitionResult
 import com.google.android.gms.location.DetectedActivity
 import io.github.eranl.gotoshelter.AlertManager
+import io.github.eranl.gotoshelter.monitoring.Logger
+import io.github.eranl.gotoshelter.util.ACTION_CHECK_DRIVING_AND_NAVIGATE
 
 /**
  * Receiver for Activity Recognition updates.
@@ -37,18 +39,19 @@ class DrivingActivityReceiver : BroadcastReceiver() {
         val confidence = mostProbableActivity.confidence
         val type = mostProbableActivity.type
 
-        Log.d("DrivingReceiver", "Detected activity: $type with confidence $confidence")
+        Logger.debugLog("Detected activity: $mostProbableActivity")
 
         // User is considered driving if IN_VEHICLE with high confidence
         val isDriving = type == DetectedActivity.IN_VEHICLE && confidence >= 50
 
-        val action = intent.getStringExtra("action")
-        if (action == "CHECK_DRIVING_AND_NAVIGATE") {
+        if (intent.action == ACTION_CHECK_DRIVING_AND_NAVIGATE) {
           Log.d("DrivingReceiver", "One-time check result: isDriving=$isDriving")
 
           // If we were checking because of an alert, trigger navigation if driving
           if (isDriving) {
             AlertManager.triggerNavigation()
+          } else {
+            Logger.debugLog("User is not driving, not triggering navigation")
           }
 
           // Stop further updates to save battery, as we only needed this check for the alert

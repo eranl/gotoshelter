@@ -76,6 +76,7 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
   private var activeLauncher: ActivityResultLauncher<Array<String>>? = null
   private var updateLauncher: ActivityResultLauncher<IntentSenderRequest>? = null
   private var activeActivity: Activity? = null
+  private var isBackgroundLocationPending: Boolean = false
 
   private val installStateListener = InstallStateUpdatedListener { state ->
     when (state.installStatus()) {
@@ -177,7 +178,10 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
 
     // Filter out permissions that are already granted (handles non-runtime automatically)
     val toProcess = permissions.filter { !currentStatus.isGranted(it) }
-    if (toProcess.isEmpty()) return
+    if (toProcess.isEmpty()) {
+      isBackgroundLocationPending = false
+      return
+    }
 
     // Special permissions first
     if (AppPermission.NOTIFICATION_ACCESS in toProcess) {
@@ -196,10 +200,12 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
     val prefs = appContext.getSharedPreferences("permissions_state", Context.MODE_PRIVATE)
     var permanentlyDenied = false
 
-    // Background location must be requested alone
+    // Background location must be requested alone on Android 11+
     val finalPermissions = if (AppPermission.BACKGROUND_LOCATION in toProcess && toProcess.size > 1) {
+      isBackgroundLocationPending = true
       toProcess.filter { it != AppPermission.BACKGROUND_LOCATION }
     } else {
+      isBackgroundLocationPending = false
       toProcess
     }
 
@@ -233,7 +239,19 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
       ActivityResultContracts.RequestMultiplePermissions()
-    ) { refreshStatus() }
+    ) { result ->
+      refreshStatus()
+      val wasPending = isBackgroundLocationPending
+      isBackgroundLocationPending = false
+      
+      val foregroundLocationGranted = status.value.isGranted(AppPermission.COARSE_LOCATION)
+      
+      // If foreground was granted, and we were waiting to ask for background, do it now.
+      // This allows the background popup to appear immediately after the foreground one.
+      if (wasPending && foregroundLocationGranted) {
+        requestPermissions(listOf(AppPermission.BACKGROUND_LOCATION))
+      }
+    }
 
     val updateFlowLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
