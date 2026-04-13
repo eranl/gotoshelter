@@ -9,8 +9,9 @@ KEY FEATURES:
 
 DISCLAIMER & SOURCE OF INFORMATION:
 GoToShelter is an independent, open-source tool and does NOT represent, and has no affiliation with, any government entity.
-OFFICIAL SOURCE: This app provides automated navigation to shelters by monitoring notifications from the official Home Front Command (Pikud HaOref) mobile application. Official government information can be verified at https://www.oref.org.il/.
-THIRD-PARTY SOURCE: The app also monitors notifications from the Tzofar application and connects to the Tzofar WebSocket API (https://ws.tzevaadom.co.il/) for real-time redundancy.
+OFFICIAL SOURCE: This app provides automated navigation to shelters by monitoring notifications from the official Home
+Front Command mobile application (https://play.google.com/store/apps/details?id=com.alert.meserhadash).
+THIRD-PARTY SOURCE: The app also monitors notifications from the Tzofar application and connects to the Tzofar WebSocket API for real-time redundancy.
 Always prioritize and follow the official alerts and instructions provided by government authorities during emergencies.
 
 PRIVACY & TRANSPARENCY:

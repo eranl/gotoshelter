@@ -27,12 +27,15 @@ import android.content.pm.ServiceInfo
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.IBinder
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import io.github.eranl.gotoshelter.AlertManager
 import io.github.eranl.gotoshelter.AndroidPlatform
+import io.github.eranl.gotoshelter.monitoring.Logger
 import io.github.eranl.gotoshelter.monitoring.TzofarMonitor
+import io.github.eranl.gotoshelter.shared.BuildConfig
 import io.github.eranl.gotoshelter.shared.R
 import io.github.eranl.gotoshelter.util.LocationHelper
 import io.github.eranl.gotoshelter.util.bindContext
@@ -40,6 +43,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 /**
@@ -50,6 +55,7 @@ class EmergencyMonitorService : Service() {
   private val TAG = "EmergencyMonitor"
   private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
   private var tzofarMonitor: TzofarMonitor? = null
+  private var wakeLock: PowerManager.WakeLock? = null
 
   companion object {
     private const val MONITOR_CHANNEL_ID = "EmergencyMonitorChannel"
@@ -77,21 +83,41 @@ class EmergencyMonitorService : Service() {
 
   override fun onCreate() {
     super.onCreate()
-    Log.d(TAG, "onCreate")
+    Logger.debugLog("EmergencyMonitorService: onCreate")
     // One-time setup of helpers and channels
     LocationHelper.bindContext(this)
     AlertManager.bindContext(this)
     createNotificationChannels()
+
+    // Acquire wake lock to prevent CPU suspension during Doze
+    val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+    wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "GoToShelter:MonitorWakeLock").apply {
+      acquire()
+    }
+    Logger.debugLog("EmergencyMonitorService: WakeLock acquired")
+
+    // Heartbeat to confirm service is alive in logs
+    if (BuildConfig.DEBUG) {
+      serviceScope.launch(Dispatchers.Default) {
+        val runtime = Runtime.getRuntime()
+        while (isActive) {
+          val usedHeap = (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024
+          Logger.debugLog("EmergencyMonitorService Heartbeat: alive (Heap: ${usedHeap}MB)")
+          delay(3600000) // Every hour
+        }
+      }
+    }
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    Log.d(TAG, "onStartCommand")
+    Logger.debugLog("EmergencyMonitorService: onStartCommand (flags: $flags, startId: $startId)")
 
     // Check if we should actually be running.
     // This handles cases where the service might be started but permissions/settings are missing.
     val platform = AndroidPlatform.getInstance(this)
-    if (!platform.status.value.canStartMonitorService) {
-      Log.w(TAG, "Service started but should not be running according to current status. Stopping.")
+    val status = platform.status.value
+    if (!status.canStartMonitorService) {
+      Logger.debugLog("Service started but should not be running. canStart: ${status.canStartMonitorService}, tzofarEnabled: ${status.tzofarEnabled}, critical: ${status.isCriticalState}. Stopping.")
       stopSelf()
       return START_NOT_STICKY
     }
@@ -112,11 +138,12 @@ class EmergencyMonitorService : Service() {
     } else {
       startForeground(FOREGROUND_NOTIFICATION_ID, notification)
     }
+    Logger.debugLog("EmergencyMonitorService: startForeground called successfully")
 
     // Initialize monitoring if not already initialized
     if (tzofarMonitor == null) {
       serviceScope.launch {
-        Log.d(TAG, "Initializing monitoring components...")
+        Logger.debugLog("Initializing monitoring components...")
         // 1. Load shared resources (polygons)
         LocationHelper.init()
 
@@ -157,7 +184,7 @@ class EmergencyMonitorService : Service() {
 
   private fun createMonitoringNotification(): Notification {
     val intent = packageManager.getLaunchIntentForPackage(packageName)?.apply {
-      flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+      flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
     }
 
     val flags = if (Build.VERSION.SDK_INT >= 23) {
@@ -178,7 +205,7 @@ class EmergencyMonitorService : Service() {
       .setContentText(getString(R.string.monitoring_service_desc))
       .setSmallIcon(appIconId)
       .setLargeIcon(largeIcon)
-      .setOngoing(true)
+      .setOngoing(true).setShowWhen(false)
       .setPriority(NotificationCompat.PRIORITY_LOW)
       .apply {
         pendingIntent?.let { setContentIntent(it) }
@@ -186,12 +213,27 @@ class EmergencyMonitorService : Service() {
       .build()
   }
 
+  override fun onTrimMemory(level: Int) {
+    super.onTrimMemory(level)
+    if (BuildConfig.DEBUG) {
+      val levelStr = when (level) {
+        TRIM_MEMORY_UI_HIDDEN -> "UI_HIDDEN"
+        TRIM_MEMORY_BACKGROUND -> "BACKGROUND"
+        else -> "LEVEL_$level"
+      }
+      Logger.debugLog("EmergencyMonitorService: onTrimMemory - level: $levelStr")
+    }
+  }
+
   override fun onDestroy() {
-    Log.d(TAG, "onDestroy")
+    Logger.debugLog("EmergencyMonitorService: onDestroy")
     isRunning = false
     tzofarMonitor?.stop()
     tzofarMonitor = null
     serviceScope.cancel()
+    if (wakeLock?.isHeld == true) {
+      wakeLock?.release()
+    }
     super.onDestroy()
   }
 

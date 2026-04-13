@@ -19,6 +19,7 @@ package io.github.eranl.gotoshelter.monitoring
 import io.github.eranl.gotoshelter.Platform
 import io.sentry.kotlin.multiplatform.Sentry
 import io.sentry.kotlin.multiplatform.protocol.User
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -33,6 +34,7 @@ import okio.buffer
 object Logger {
   private val reporters = mutableListOf<ErrorReporter>()
   private var debuggingLog: BufferedSink? = null
+  private val logMutex = Mutex()
 
   /**
    * Initializes Sentry with strict privacy settings.
@@ -108,8 +110,14 @@ object Logger {
 
   fun debugLog(message: String) {
     debuggingLog?.let {
-      val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-      it.writeUtf8("[$now]: $message\n").flush()
+      if (logMutex.tryLock()) {
+        try {
+          val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+          it.writeUtf8("[$now]: $message\n").flush()
+        } finally {
+          logMutex.unlock()
+        }
+      }
     }
   }
 }

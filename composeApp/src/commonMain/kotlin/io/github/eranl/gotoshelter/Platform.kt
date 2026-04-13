@@ -92,6 +92,8 @@ interface Platform {
   fun checkForUpdates()
   fun requestUpdate()
   fun completeUpdate()
+
+  fun logExitReasons()
 }
 
 @Composable

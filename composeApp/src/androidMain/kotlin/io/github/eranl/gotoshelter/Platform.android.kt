@@ -18,6 +18,8 @@ package io.github.eranl.gotoshelter
 
 import android.Manifest
 import android.app.Activity
+import android.app.ActivityManager
+import android.app.ApplicationExitInfo
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -48,6 +50,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import io.github.eranl.gotoshelter.monitoring.Logger
 import io.github.eranl.gotoshelter.service.EmergencyMonitorService
 import io.github.eranl.gotoshelter.shared.BuildConfig
 import io.github.eranl.gotoshelter.util.HFC_PACKAGE_NAME
@@ -57,6 +60,9 @@ import io.github.eranl.gotoshelter.util.isNotificationServiceEnabled
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import okio.Path.Companion.toOkioPath
 
 class AndroidPlatform private constructor(private val appContext: Context) : Platform {
@@ -313,6 +319,47 @@ class AndroidPlatform private constructor(private val appContext: Context) : Pla
 
   override fun completeUpdate() {
     appUpdateManager.completeUpdate()
+  }
+
+  override fun logExitReasons() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      val activityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+      val exitReasons = activityManager.getHistoricalProcessExitReasons(null, 0, 0)
+      Logger.debugLog("--- Historical Process Exit Reasons (Found: ${exitReasons.size}) ---")
+      exitReasons.forEach { info ->
+        val reasonStr = when (info.reason) {
+          ApplicationExitInfo.REASON_EXIT_SELF -> "EXIT_SELF"
+          ApplicationExitInfo.REASON_SIGNALED -> "SIGNALED (Signal: ${info.status})"
+          ApplicationExitInfo.REASON_LOW_MEMORY -> "LOW_MEMORY"
+          ApplicationExitInfo.REASON_CRASH -> "CRASH"
+          ApplicationExitInfo.REASON_CRASH_NATIVE -> "CRASH_NATIVE"
+          ApplicationExitInfo.REASON_ANR -> "ANR"
+          ApplicationExitInfo.REASON_INITIALIZATION_FAILURE -> "INITIALIZATION_FAILURE"
+          ApplicationExitInfo.REASON_PERMISSION_CHANGE -> "PERMISSION_CHANGE"
+          ApplicationExitInfo.REASON_USER_REQUESTED -> "USER_REQUESTED"
+          ApplicationExitInfo.REASON_USER_STOPPED -> "USER_STOPPED"
+          ApplicationExitInfo.REASON_DEPENDENCY_DIED -> "DEPENDENCY_DIED"
+          ApplicationExitInfo.REASON_OTHER -> "OTHER"
+          else -> "UNKNOWN (${info.reason})"
+        }
+        val dateTime = Instant.fromEpochMilliseconds(info.timestamp).toLocalDateTime(TimeZone.currentSystemDefault())
+        val importanceStr = when (info.importance) {
+          ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND -> "FOREGROUND"
+          ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND_SERVICE -> "FOREGROUND_SERVICE"
+          ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE -> "VISIBLE"
+          ActivityManager.RunningAppProcessInfo.IMPORTANCE_PERCEPTIBLE -> "PERCEPTIBLE"
+          ActivityManager.RunningAppProcessInfo.IMPORTANCE_SERVICE -> "SERVICE"
+          ActivityManager.RunningAppProcessInfo.IMPORTANCE_CACHED -> "CACHED"
+          ActivityManager.RunningAppProcessInfo.IMPORTANCE_GONE -> "GONE"
+          else -> "IMPORTANCE_${info.importance}"
+        }
+        val memoryInfo = "PSS: ${info.pss / 1024}MB, RSS: ${info.rss / 1024}MB, Importance: $importanceStr"
+        Logger.debugLog("Time: $dateTime, Reason: $reasonStr, $memoryInfo, Desc: ${info.description}")
+      }
+      Logger.debugLog("--- End of Exit Reasons ---")
+    } else {
+      Logger.debugLog("Exit reasons not supported on this Android version")
+    }
   }
 
   private fun getAndroidPermissionStrings(permission: AppPermission): List<String> = when (permission) {

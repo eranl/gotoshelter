@@ -26,7 +26,7 @@ import io.github.eranl.gotoshelter.util.HFC_PACKAGE_NAME
 
 /**
  * Service that listens for notifications from emergency alert apps.
- * Monitors Home Front Command, Tzofar, RedColor, and Cumta.
+ * Monitors Home Front Command.
  */
 class EmergencyAlertListenerService : NotificationListenerService() {
   companion object {

@@ -45,7 +45,7 @@ android {
     applicationId = "io.github.eranl.gotoshelter"
     minSdk = 21
     targetSdk = 36
-    versionCode = 8
+    versionCode = 9
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

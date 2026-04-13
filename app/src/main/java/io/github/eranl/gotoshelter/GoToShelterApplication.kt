@@ -17,6 +17,7 @@
 package io.github.eranl.gotoshelter
 
 import android.app.Application
+import android.content.ComponentCallbacks2
 import io.github.eranl.gotoshelter.monitoring.Logger
 
 class GoToShelterApplication : Application() {
@@ -24,7 +25,21 @@ class GoToShelterApplication : Application() {
     super.onCreate()
 
     // Initialize our common Logger which handles Sentry
-    Logger.init(BuildConfig.SENTRY_DSN, AndroidPlatform.getInstance(this))
+    val platform = AndroidPlatform.getInstance(this)
+    Logger.init(BuildConfig.SENTRY_DSN, platform)
     Logger.debugLog("app created")
+    
+    // Log why we were last closed
+    platform.logExitReasons()
+  }
+
+  override fun onTrimMemory(level: Int) {
+    super.onTrimMemory(level)
+    val levelStr = when (level) {
+      ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN -> "UI_HIDDEN"
+      ComponentCallbacks2.TRIM_MEMORY_BACKGROUND -> "BACKGROUND"
+      else -> "LEVEL_$level"
+    }
+    Logger.debugLog("GoToShelterApplication: onTrimMemory - level: $levelStr")
   }
 }

@@ -277,6 +277,15 @@ fun SettingsContent(
         if (status.debugBuild) {
           Spacer(modifier = Modifier.height(16.dp))
           Button(
+            onClick = { platform?.logExitReasons() },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+          ) {
+            Text("Log Historical Exit Reasons", color = Color.White)
+          }
+
+          Spacer(modifier = Modifier.height(8.dp))
+          Button(
             onClick = { /*throw RuntimeException("Debug Test Crash triggered by user")*/
               Logger.logError(RuntimeException("Debug Test error triggered by user"))
             },

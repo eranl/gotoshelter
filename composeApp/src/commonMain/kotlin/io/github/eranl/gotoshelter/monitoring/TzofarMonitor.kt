@@ -16,7 +16,6 @@
 
 package io.github.eranl.gotoshelter.monitoring
 
-import androidx.compose.ui.text.intl.Locale
 import io.github.eranl.gotoshelter.AlertManager
 import io.github.eranl.gotoshelter.util.LocationHelper
 import io.ktor.client.HttpClient
@@ -55,7 +54,7 @@ class TzofarMonitor(
   private var monitoringJob: Job? = null
 
   companion object {
-    private const val MAX_FAILURES = 50
+    private const val MAX_CONNECT_FAILURES = 50
     private const val RETRY_DELAY_MS = 30000L
   }
 
@@ -63,26 +62,35 @@ class TzofarMonitor(
     if (monitoringJob?.isActive == true) return
 
     monitoringJob = scope.launch {
-      var failureCount = 0
+      var consecutiveConnectFailures = 0
       while (isActive) {
+        var connectionWasEstablished = false
         try {
-          connectAndListen()
-          // Reset failure count on successful connection closure
-          failureCount = 0
-        } catch (e: Exception) {
-          failureCount++
-          if (failureCount > MAX_FAILURES) {
-            println("TzofarMonitor: Max failures ($MAX_FAILURES) reached. Crashing.")
-            throw e
+          connectAndListen {
+            connectionWasEstablished = true
+            consecutiveConnectFailures = 0 // Reset on successful handshake
           }
-          println("TzofarMonitor: Connection error ($failureCount/$MAX_FAILURES): ${e.message}. Retrying in ${RETRY_DELAY_MS / 1000}s...")
-          delay(RETRY_DELAY_MS)
+        } catch (e: Exception) {
+          if (connectionWasEstablished) {
+            // The connection was active but dropped later (e.g. hourly abort)
+            Logger.debugLog("TzofarMonitor: Connection lost: ${e.message}. Reconnecting immediately...")
+          } else {
+            // Failed to even establish the connection
+            consecutiveConnectFailures++
+            Logger.debugLog("TzofarMonitor: Failed to connect ($consecutiveConnectFailures/$MAX_CONNECT_FAILURES): ${e.message}. Retrying in ${RETRY_DELAY_MS / 1000}s...")
+            
+            if (consecutiveConnectFailures > MAX_CONNECT_FAILURES) {
+              Logger.debugLog("TzofarMonitor: Max consecutive connection failures reached. Crashing.")
+              throw e
+            }
+            delay(RETRY_DELAY_MS)
+          }
         }
       }
     }
   }
 
-  private suspend fun connectAndListen() {
+  private suspend fun connectAndListen(onConnect: () -> Unit) {
     // Use wss for secure connection to avoid CLEARTEXT policy errors
     client.wss(
       method = HttpMethod.Get,
@@ -95,12 +103,14 @@ class TzofarMonitor(
         header("tzofar", generateTzofarToken())
       }
     ) {
-      println("TzofarMonitor: Connected to WebSocket")
+      Logger.debugLog("TzofarMonitor: Connected to WebSocket")
+      onConnect()
       for (frame in incoming) {
         if (frame is Frame.Text) {
           handleMessage(frame.readText())
         }
       }
+      Logger.debugLog("TzofarMonitor: WebSocket connection closed by server")
     }
   }
 
